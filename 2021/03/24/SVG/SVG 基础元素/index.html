@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>SVG 基础元素 | Hexo</title>
+  <meta name="description" content="SVG 基础元素SVG 元素通用属性 transform 对基础图形进行变换处理（与 CSS3 中的 transform 属性有点不一致） 平移 translate(50,30)  缩放 scale(2)  旋转 rotate(30)  翻转 skewX()、skewY(10)   fill：填充色 stroke：定义图形、文本等的边线颜色  说明：支持 hover 伪类、id、class 等 S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SVG 基础元素">
+<meta property="og:url" content="https://xuxb.github.io/2021/03/24/SVG/SVG%20%E5%9F%BA%E7%A1%80%E5%85%83%E7%B4%A0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="SVG 基础元素SVG 元素通用属性 transform 对基础图形进行变换处理（与 CSS3 中的 transform 属性有点不一致） 平移 translate(50,30)  缩放 scale(2)  旋转 rotate(30)  翻转 skewX()、skewY(10)   fill：填充色 stroke：定义图形、文本等的边线颜色  说明：支持 hover 伪类、id、class 等 S">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mdn.mozillademos.org/files/730/SVG_Stroke_Linecap_Example.png">
+<meta property="og:image" content="https://mdn.mozillademos.org/files/731/SVG_Stroke_Linejoin_Example.png">
+<meta property="article:published_time" content="2021-03-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-28T02:34:15.251Z">
+<meta property="article:author" content="一枚小笨蛋">
+<meta property="article:tag" content="SVG">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mdn.mozillademos.org/files/730/SVG_Stroke_Linecap_Example.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://xuxb.github.io/2021/03/24/SVG/SVG%20%E5%9F%BA%E7%A1%80%E5%85%83%E7%B4%A0/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xuxb" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">一枚小笨蛋</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">web 前端开发工程师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 广东深圳</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/Sass/">Sass</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/D3-js/">D3.js</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SVG/">SVG</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/">杂项</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/D3-js/" rel="tag">D3.js</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSONP/" rel="tag">JSONP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" rel="tag">JavaScript 原理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" rel="tag">JavaScript 基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Performance/" rel="tag">Performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVG/" rel="tag">SVG</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sass/" rel="tag">Sass</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/" rel="tag">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/" rel="tag">server</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" rel="tag">同源策略</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD/" rel="tag">性能</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CSS/" style="font-size: 13.67px;">CSS</a> <a href="/tags/D3-js/" style="font-size: 14px;">D3.js</a> <a href="/tags/JSONP/" style="font-size: 13px;">JSONP</a> <a href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" style="font-size: 13px;">JavaScript 原理</a> <a href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" style="font-size: 13px;">JavaScript 基础</a> <a href="/tags/Performance/" style="font-size: 13px;">Performance</a> <a href="/tags/SVG/" style="font-size: 13.33px;">SVG</a> <a href="/tags/Sass/" style="font-size: 13.33px;">Sass</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/server/" style="font-size: 13.33px;">server</a> <a href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" style="font-size: 13px;">同源策略</a> <a href="/tags/%E6%80%A7%E8%83%BD/" style="font-size: 13px;">性能</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">15</span></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-SVG/SVG 基础元素" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SVG 基础元素
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/03/24/SVG/SVG%20%E5%9F%BA%E7%A1%80%E5%85%83%E7%B4%A0/" class="article-date">
+	  <time datetime="2021-03-23T16:00:00.000Z" itemprop="datePublished">2021-03-24</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/SVG/">SVG</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/SVG/" rel="tag">SVG</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/03/24/SVG/SVG%20%E5%9F%BA%E7%A1%80%E5%85%83%E7%B4%A0/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        
+          
+            <h1 id="SVG-基础元素"><a href="#SVG-基础元素" class="headerlink" title="SVG 基础元素"></a>SVG 基础元素</h1><h2 id="SVG-元素通用属性"><a href="#SVG-元素通用属性" class="headerlink" title="SVG 元素通用属性"></a>SVG 元素通用属性</h2><ul>
+<li>transform 对基础图形进行变换处理（与 CSS3 中的 transform 属性有点不一致）<ul>
+<li>平移 <code>translate(50,30)</code> </li>
+<li>缩放 <code>scale(2)</code> </li>
+<li>旋转 <code>rotate(30)</code> </li>
+<li>翻转 <code>skewX()</code>、<code>skewY(10)</code></li>
+</ul>
+</li>
+<li>fill：填充色</li>
+<li>stroke：定义图形、文本等的边线颜色</li>
+</ul>
+<p>说明：支持 hover 伪类、id、class 等</p>
+<h2 id="SVG-元素通用-CSS-样式"><a href="#SVG-元素通用-CSS-样式" class="headerlink" title="SVG 元素通用 CSS 样式"></a>SVG 元素通用 CSS 样式</h2><ul>
+<li>display: 控制元素是否可见（<code>inline</code>、<code>none</code>，所有元素的初始值都为 <code>inline</code>）</li>
+<li>fill:  填充色</li>
+<li>fill-opacity: 填充色透明度</li>
+<li>stroke: 定义图形、文本等的边线颜色</li>
+<li>stroke-width: 定义图形、文字边线的宽度 </li>
+<li>stroke-opacity: 定义图形、文字边线的透明度</li>
+<li>stroke-linecap：用来定义开放式路径的端点的样式（<code>butt</code>、<code>round</code>、<code>square</code>）</li>
+<li>stroke-linejoin：用来控制两个线段之间的联合是如何绘制</li>
+<li>stroke-dasharray：用来创建虚线（如 <code>stroke-dasharray=&quot;5,5&quot;</code>）</li>
+<li>fill-rule：判断路径的哪一侧在路径所构成的形状的内部，从而判断fill属性如何给这个形状上色</li>
+</ul>
+<p><img src="https://mdn.mozillademos.org/files/730/SVG_Stroke_Linecap_Example.png" alt="stroke-linecap 属性"><br><img src="https://mdn.mozillademos.org/files/731/SVG_Stroke_Linejoin_Example.png" alt="stroke-linejoin 属性"></p>
+<h2 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h2><h3 id="SVG-文本-（-lt-text-gt-）"><a href="#SVG-文本-（-lt-text-gt-）" class="headerlink" title="SVG 文本 （&lt;text&gt;）"></a>SVG 文本 （<code>&lt;text&gt;</code>）</h3><p>说明：用来定义文字文本，例如 <code>&lt;text&gt;测试文字&lt;/text&gt;</code></p>
+<p>支持的样式：<code>font-family</code>，<code>font-style</code>，<code>font-weight</code>，<code>font-variant</code>，<code>font-stretch</code>，<code>font-size</code>，<code>font-size-adjust</code>，<code>kerning</code>，<code>letter-spacing</code>，<code>word-spacing</code> 和 <code>text-decoration</code></p>
+<h3 id="内联文本-（-lt-tspan-gt-）"><a href="#内联文本-（-lt-tspan-gt-）" class="headerlink" title="内联文本  （&lt;tspan&gt;）"></a>内联文本  （<code>&lt;tspan&gt;</code>）</h3><p>说明：嵌套在 <code>&lt;text&gt;</code> 标签中，与 <code>&lt;span&gt;</code> 标签类似，用于定义一组文本的样式</p>
+<h3 id="文本路径-（-lt-textPath-gt-）"><a href="#文本路径-（-lt-textPath-gt-）" class="headerlink" title="文本路径  （&lt;textPath&gt;）"></a>文本路径  （<code>&lt;textPath&gt;</code>）</h3><p>说明：嵌套在 <code>&lt;text&gt;</code> 标签中，使文字按照指定路径排列，放在 <code>&lt;text&gt;</code> 标记内部引用预定义的 <code>&lt;path&gt;</code>，引用时，使用 <code>xlink:href</code> 属性指明需要引用的路径的 ID</p>
+<h3 id="链接-（-lt-a-gt-）"><a href="#链接-（-lt-a-gt-）" class="headerlink" title="链接 （&lt;a&gt;）"></a>链接 （<code>&lt;a&gt;</code>）</h3><p>说明：创建一个 SVG 元素链接</p>
+<ul>
+<li>xlink:show</li>
+<li>xlink:actuate</li>
+<li>xlink:href</li>
+<li>target</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>SVG 学习<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">        * &#123;</span><br><span class="line"><span class="css">            <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="css">            <span class="attribute">padding</span>: <span class="number">0</span>;</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">&quot;800&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span> <span class="attr">style</span>=<span class="string">&quot;border: 1px solid #aaa;&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">defs</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">path</span> <span class="attr">id</span>=<span class="string">&quot;MyPath&quot;</span> <span class="attr">d</span>=<span class="string">&quot;M 100 200 </span></span></span><br><span class="line"><span class="tag"><span class="string">                     C 200 100 300   0 400 100</span></span></span><br><span class="line"><span class="tag"><span class="string">                     C 500 200 600 300 700 200</span></span></span><br><span class="line"><span class="tag"><span class="string">                     C 800 100 900 100 900 100&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">defs</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">a</span> <span class="attr">xlink:href</span>=<span class="string">&quot;https://www.baidu.com&quot;</span> <span class="attr">target</span>=<span class="string">&quot;_blank&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">&quot;100&quot;</span> <span class="attr">y</span>=<span class="string">&quot;15&quot;</span> <span class="attr">style</span>=<span class="string">&quot;fill: #009; cursor: pointer;&quot;</span>&gt;</span> 打开百度<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">&quot;0&quot;</span> <span class="attr">y</span>=<span class="string">&quot;15&quot;</span> <span class="attr">style</span>=<span class="string">&quot;fill: red;&quot;</span> <span class="attr">transform</span>=<span class="string">&quot;rotate(30 20, 30)&quot;</span>&gt;</span></span><br><span class="line">             Just test SVG! <span class="tag">&lt;<span class="name">tspan</span> <span class="attr">style</span>=<span class="string">&quot;fill: #0f0; font-size: 26px; font-style: italic;&quot;</span>&gt;</span>中国人民银行<span class="tag">&lt;/<span class="name">tspan</span>&gt;</span> nothing nothing nothing</span><br><span class="line">        <span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">text</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">textPath</span> <span class="attr">xlink:href</span>=<span class="string">&quot;#MyPath&quot;</span>&gt;</span></span><br><span class="line">                SVG 基本功能测试基本功能测试基本功能测试基本功能测试基本功能测试</span><br><span class="line">            <span class="tag">&lt;/<span class="name">textPath</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="基本图形"><a href="#基本图形" class="headerlink" title="基本图形"></a>基本图形</h2><h3 id="矩形（-lt-rect-gt-）"><a href="#矩形（-lt-rect-gt-）" class="headerlink" title="矩形（&lt;rect&gt;）"></a>矩形（<code>&lt;rect&gt;</code>）</h3><ul>
+<li>x: 元素距离左边的距离</li>
+<li>y: 元素距离上边的距离</li>
+<li>width: 元素的宽度</li>
+<li>height: 元素的高度</li>
+<li>rx: 矩形 X 轴方向的半径</li>
+<li>rx: 矩形 Y 轴方向的半径</li>
+</ul>
+<h3 id="圆形-（-lt-circle-gt-）"><a href="#圆形-（-lt-circle-gt-）" class="headerlink" title="圆形 （&lt;circle&gt;）"></a>圆形 （<code>&lt;circle&gt;</code>）</h3><ul>
+<li>cx: 圆心距离 Y 轴的距离</li>
+<li>cy: 圆心距离 X 轴的距离</li>
+<li>r: 圆的半径</li>
+</ul>
+<h3 id="椭圆（-lt-ellipse-gt-）"><a href="#椭圆（-lt-ellipse-gt-）" class="headerlink" title="椭圆（&lt;ellipse&gt;）"></a>椭圆（<code>&lt;ellipse&gt;</code>）</h3><ul>
+<li>cx: 圆心距离 Y 轴的距离</li>
+<li>cy: 圆心距离 X 轴的距离</li>
+<li>rx: 圆的 X 轴的半径</li>
+<li>ry: 圆的 Y 轴的半径</li>
+</ul>
+<h3 id="直线（-lt-line-gt-）"><a href="#直线（-lt-line-gt-）" class="headerlink" title="直线（&lt;line&gt;）"></a>直线（<code>&lt;line&gt;</code>）</h3><ul>
+<li>x1: X 轴方向的起点</li>
+<li>y1: Y 轴方向的起点</li>
+<li>x2: X 轴方向的终点</li>
+<li>y2: Y 轴方向的终点</li>
+</ul>
+<h3 id="折线-（-lt-polyline-gt-）"><a href="#折线-（-lt-polyline-gt-）" class="headerlink" title="折线 （&lt;polyline&gt;）"></a>折线 （<code>&lt;polyline&gt;</code>）</h3><ul>
+<li>points 属性里定义了各个点的坐标，x 和 y 坐标之间用逗号分别，多个坐标之间用空格分割<ul>
+<li>例如 <code>&lt;polyline points=&quot;3,3 10,40 50,100 20,150&quot;/&gt;</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="多边形-（-lt-polygen-gt-）"><a href="#多边形-（-lt-polygen-gt-）" class="headerlink" title="多边形 （&lt;polygen&gt;）"></a>多边形 （<code>&lt;polygen&gt;</code>）</h3><ul>
+<li>points 属性里定义了各个点的坐标，x 和 y 坐标之间用逗号分别，多个坐标之间用空格分割，并组成闭合的环形</li>
+</ul>
+<h3 id="路径-（-lt-path-gt-）"><a href="#路径-（-lt-path-gt-）" class="headerlink" title="路径 （&lt;path&gt;）"></a>路径 （<code>&lt;path&gt;</code>）</h3><ul>
+<li>d 用于定义一系列指令，例如 <code>&lt;path d=&quot;M150 0 L75 200 L225 200 Z&quot; /&gt;</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>参数</th>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>M</td>
+<td>x,y</td>
+<td>moveto</td>
+<td>移动到    移动虚拟画笔到指定的（x,y）坐标，仅移动不绘制</td>
+</tr>
+<tr>
+<td>m</td>
+<td>x,y</td>
+<td>moveto</td>
+<td>同M，但使用相对坐标</td>
+</tr>
+<tr>
+<td>L</td>
+<td>x,y</td>
+<td>lineto</td>
+<td>连直线到    从当前画笔所在位置绘制一条直线到指定的（x,y）坐标</td>
+</tr>
+<tr>
+<td>l</td>
+<td>x,y</td>
+<td>lineto</td>
+<td>同L，但使用相对坐标</td>
+</tr>
+<tr>
+<td>H</td>
+<td>x</td>
+<td>horizontal lineto</td>
+<td>水平连线到    绘制一条水平直线到参数指定的x坐标点，y坐标为画笔的y坐标</td>
+</tr>
+<tr>
+<td>h</td>
+<td>x</td>
+<td>horizontal lineto</td>
+<td>同H，但使用相对坐标</td>
+</tr>
+<tr>
+<td>V</td>
+<td>y</td>
+<td>vertical lineto</td>
+<td>垂直连线到    从当前位置绘制一条垂直直线到参数指定的y坐标</td>
+</tr>
+<tr>
+<td>v</td>
+<td>y</td>
+<td>vertical lineto</td>
+<td>同V，但使用相对坐标</td>
+</tr>
+<tr>
+<td>C</td>
+<td>x1,y1 x2,y2 x,y</td>
+<td>curveto 三次方贝塞尔曲线</td>
+<td>从当前画笔位置绘制一条三次贝兹曲线到参数（x,y）指定的坐标。x1，y1和x2,y2是曲线的开始和结束控制点，用于控制曲线的弧度</td>
+</tr>
+<tr>
+<td>c</td>
+<td>x1,y1 x2,y2 x,y</td>
+<td>curveto</td>
+<td>同C，但使用相对坐标</td>
+</tr>
+<tr>
+<td>S</td>
+<td>x2,y2 x,y</td>
+<td>shorthand</td>
+<td>平滑三次方贝塞尔曲线    从当前画笔位置绘制一条三次贝塞尔曲线到参数（x,y）指定的坐标。x2,y2是结束控制点。开始控制点和前一条曲线的结束控制点相同</td>
+</tr>
+<tr>
+<td>s</td>
+<td>x2,y2 x,y</td>
+<td>shorthand</td>
+<td>平滑三次方贝塞尔曲线    同S，但使用相对坐标</td>
+</tr>
+<tr>
+<td>Q</td>
+<td>x1,y1 x,y</td>
+<td>二次方贝塞尔曲线</td>
+<td>从当前画笔位置绘制一条二次方贝塞尔曲线到参数（x,y）指定的坐标。x1,y1是控制点，用于控制曲线的弧度</td>
+</tr>
+<tr>
+<td>q</td>
+<td>x1,y1 x,y</td>
+<td>二次方贝塞尔曲线</td>
+<td>同Q，但使用相对坐标</td>
+</tr>
+<tr>
+<td>T</td>
+<td>x,y</td>
+<td>平滑的二次贝塞尔曲线</td>
+<td>从当前画笔位置绘制一条二次贝塞尔曲线到参数（x,y）指定的坐标。控制点被假定为最后一次使用的控制点</td>
+</tr>
+<tr>
+<td>t</td>
+<td>x,y</td>
+<td>平滑的二次贝塞尔曲线</td>
+<td>同T，但使用相对坐标</td>
+</tr>
+<tr>
+<td>A</td>
+<td>rx,ry x-axis-rotation large-arc-flag,sweepflag x,y</td>
+<td>椭圆弧线</td>
+<td>从当前画笔位置开始绘制一条椭圆弧线到（x,y）指定的坐标。rx和ry分别为椭圆弧线水平和垂直方向上的半径。x-axis-rotation指定弧线绕x轴旋转的度数。它只在rx和ry的值不相同是有效果。large-arc-flag是大弧标志位，取值0或1，用于决定绘制大弧还是小弧。sweep-flag用于决定弧线绘制的方向</td>
+</tr>
+<tr>
+<td>a</td>
+<td>rx,ry x-axis-rotation large-arc-flag,sweepflag x,y</td>
+<td>椭圆弧线</td>
+<td>同A，但使用相对坐标</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>无</td>
+<td>闭合路径</td>
+<td>从结束点绘制一条直线到开始点，闭合路径</td>
+</tr>
+<tr>
+<td>z</td>
+<td>无</td>
+<td>闭合路径</td>
+<td>同Z</td>
+</tr>
+</tbody></table>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>SVG 学习<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">        * &#123;</span><br><span class="line"><span class="css">            <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="css">            <span class="attribute">padding</span>: <span class="number">0</span>;</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span> <span class="attr">style</span>=<span class="string">&quot;border: 1px solid #999;&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rect</span> <span class="attr">x</span>=<span class="string">&quot;20&quot;</span> <span class="attr">y</span>=<span class="string">&quot;40&quot;</span> <span class="attr">width</span>=<span class="string">&quot;200&quot;</span> <span class="attr">height</span>=<span class="string">&quot;200&quot;</span> <span class="attr">rx</span>=<span class="string">&quot;20&quot;</span> <span class="attr">ry</span>=<span class="string">&quot;30&quot;</span> <span class="attr">style</span>=<span class="string">&quot;fill: #009;stroke: #f00; stroke-width: 2; fill-opacity: 0.5; stroke-opacity: 5.2&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">&quot;290&quot;</span> <span class="attr">cy</span>=<span class="string">&quot;60&quot;</span> <span class="attr">r</span>=<span class="string">&quot;40&quot;</span> <span class="attr">style</span>=<span class="string">&quot;fill: #0f0; fill-opacity: .4;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ellipse</span> <span class="attr">cx</span>=<span class="string">&quot;300&quot;</span> <span class="attr">cy</span>=<span class="string">&quot;150&quot;</span> <span class="attr">rx</span>=<span class="string">&quot;60&quot;</span> <span class="attr">ry</span>=<span class="string">&quot;40&quot;</span> <span class="attr">style</span>=<span class="string">&quot;fill: #900; stroke: #999; stroke-width: 3; stroke-opacity: .5;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">line</span> <span class="attr">x1</span>=<span class="string">&quot;240&quot;</span> <span class="attr">y1</span>=<span class="string">&quot;220&quot;</span> <span class="attr">x2</span>=<span class="string">&quot;395&quot;</span> <span class="attr">y2</span>=<span class="string">&quot;220&quot;</span> <span class="attr">style</span>=<span class="string">&quot;stroke: #333; stroke-width: 2;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">polyline</span> <span class="attr">points</span>=<span class="string">&quot;3,3 10,40 50,100 20,150 20,180 50,180 50,210 80,210 110,210&quot;</span> <span class="attr">style</span>=<span class="string">&quot;fill:none; stroke:#099; stroke-width: 1&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">polygon</span> <span class="attr">points</span>=<span class="string">&quot;110, 20 30, 40 80, 50&quot;</span> <span class="attr">style</span>=<span class="string">&quot;fill: #934;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">polygon</span> <span class="attr">points</span>=<span class="string">&quot;100,10 40,198 190,78 10,78 160,198&quot;</span> <span class="attr">style</span>=<span class="string">&quot;fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">&quot;M 175 200 l 150 0&quot;</span> <span class="attr">stroke</span>=<span class="string">&quot;green&quot;</span> <span class="attr">stroke-width</span>=<span class="string">&quot;3&quot;</span> <span class="attr">fill</span>=<span class="string">&quot;none&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">&quot;M 100 350 q 150 -300 300 0&quot;</span> <span class="attr">stroke</span>=<span class="string">&quot;blue&quot;</span> <span class="attr">stroke-width</span>=<span class="string">&quot;5&quot;</span> <span class="attr">fill</span>=<span class="string">&quot;none&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="结构元素"><a href="#结构元素" class="headerlink" title="结构元素"></a>结构元素</h2><h3 id="分组-（-lt-g-gt-）"><a href="#分组-（-lt-g-gt-）" class="headerlink" title="分组 （&lt;g&gt;）"></a>分组 （<code>&lt;g&gt;</code>）</h3><p>说明：<code>&lt;g&gt;</code> 用于分组，它能把多个元素放在一组里，对 <code>&lt;g&gt;</code> 标记的样式和渲染会作用到这个分组内的所有元素上。组内的所有元素都会继承 <code>&lt;g&gt;</code> 标记上的所有属性。用 <code>&lt;g&gt;</code> 定义的分组还可以使用 <code>&lt;use&gt;</code> 进行复制使用。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>SVG 学习<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">        * &#123;</span><br><span class="line"><span class="css">            <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="css">            <span class="attribute">padding</span>: <span class="number">0</span>;</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;300&quot;</span> <span class="attr">style</span>=<span class="string">&quot;border: 1px solid #999;&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">g</span> <span class="attr">style</span>=<span class="string">&quot;fill: red; stroke: #090; stroke-width: 2;&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">circle</span> <span class="attr">r</span>=<span class="string">&quot;40&quot;</span> <span class="attr">cx</span>=<span class="string">&quot;180&quot;</span> <span class="attr">cy</span>=<span class="string">&quot;140&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">circle</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">rect</span> <span class="attr">x</span>=<span class="string">&quot;30&quot;</span> <span class="attr">y</span>=<span class="string">&quot;40&quot;</span> <span class="attr">width</span>=<span class="string">&quot;100&quot;</span> <span class="attr">height</span>=<span class="string">&quot;50&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">rect</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">rect</span> <span class="attr">x</span>=<span class="string">&quot;230&quot;</span> <span class="attr">y</span>=<span class="string">&quot;40&quot;</span> <span class="attr">width</span>=<span class="string">&quot;100&quot;</span> <span class="attr">height</span>=<span class="string">&quot;50&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">rect</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">g</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="复制-（-lt-use-gt-）"><a href="#复制-（-lt-use-gt-）" class="headerlink" title="复制 （&lt;use&gt;）"></a>复制 （<code>&lt;use&gt;</code>）</h3><p>说明：<code>&lt;use&gt;</code> 能从 SVG 文档内部取出一个节点，克隆它，并把它输出到别处。子元素能继承来自 <code>&lt;use&gt;</code> 样式</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>SVG 学习<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">        * &#123;</span><br><span class="line"><span class="css">            <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="css">            <span class="attribute">padding</span>: <span class="number">0</span>;</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;300&quot;</span> <span class="attr">style</span>=<span class="string">&quot;border: 1px solid #999;&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">defs</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">g</span> <span class="attr">id</span>=<span class="string">&quot;shape&quot;</span> <span class="attr">style</span>=<span class="string">&quot;fill: inherit; stroke: #090; stroke-width: 2;&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">circle</span> <span class="attr">r</span>=<span class="string">&quot;40&quot;</span> <span class="attr">cx</span>=<span class="string">&quot;180&quot;</span> <span class="attr">cy</span>=<span class="string">&quot;140&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">circle</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">rect</span> <span class="attr">x</span>=<span class="string">&quot;30&quot;</span> <span class="attr">y</span>=<span class="string">&quot;40&quot;</span> <span class="attr">width</span>=<span class="string">&quot;100&quot;</span> <span class="attr">height</span>=<span class="string">&quot;50&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">rect</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">rect</span> <span class="attr">x</span>=<span class="string">&quot;230&quot;</span> <span class="attr">y</span>=<span class="string">&quot;40&quot;</span> <span class="attr">width</span>=<span class="string">&quot;100&quot;</span> <span class="attr">height</span>=<span class="string">&quot;50&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">rect</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">g</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">defs</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">text</span> <span class="attr">y</span>=<span class="string">&quot;15&quot;</span>&gt;</span>图形1<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">use</span> <span class="attr">x</span>=<span class="string">&quot;20&quot;</span> <span class="attr">y</span>=<span class="string">&quot;20&quot;</span> <span class="attr">xlink:href</span>=<span class="string">&quot;#shape&quot;</span> <span class="attr">style</span>=<span class="string">&quot;fill: #009;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">use</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="模板（）"><a href="#模板（）" class="headerlink" title="模板（）"></a>模板（<symbol>）</h3><p><code>&lt;symbol&gt;</code> 的作用是定义一个图像模板，使用 <code>&lt;use&gt;</code> 标记实例化它，然后在 SVG 文档中反复使用。<code>&lt;symbol&gt;</code> 本身不会输出任何图像，只有使用 <code>&lt;use&gt;</code> 实例化后才会显示。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>SVG 学习<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">        * &#123;</span><br><span class="line"><span class="css">            <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="css">            <span class="attribute">padding</span>: <span class="number">0</span>;</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;300&quot;</span> <span class="attr">style</span>=<span class="string">&quot;border: 1px solid #999;&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- symbol definition  NEVER draw --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">symbol</span> <span class="attr">id</span>=<span class="string">&quot;sym01&quot;</span> <span class="attr">viewBox</span>=<span class="string">&quot;0 0 150 110&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">&quot;50&quot;</span> <span class="attr">cy</span>=<span class="string">&quot;50&quot;</span> <span class="attr">r</span>=<span class="string">&quot;40&quot;</span> <span class="attr">stroke-width</span>=<span class="string">&quot;8&quot;</span> <span class="attr">stroke</span>=<span class="string">&quot;red&quot;</span> <span class="attr">fill</span>=<span class="string">&quot;red&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">&quot;90&quot;</span> <span class="attr">cy</span>=<span class="string">&quot;60&quot;</span> <span class="attr">r</span>=<span class="string">&quot;40&quot;</span> <span class="attr">stroke-width</span>=<span class="string">&quot;8&quot;</span> <span class="attr">stroke</span>=<span class="string">&quot;green&quot;</span> <span class="attr">fill</span>=<span class="string">&quot;white&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">symbol</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">        <span class="comment">&lt;!-- actual drawing by &quot;use&quot; element --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">use</span> <span class="attr">xlink:href</span>=<span class="string">&quot;#sym01&quot;</span> <span class="attr">x</span>=<span class="string">&quot;0&quot;</span> <span class="attr">y</span>=<span class="string">&quot;0&quot;</span> <span class="attr">width</span>=<span class="string">&quot;100&quot;</span> <span class="attr">height</span>=<span class="string">&quot;50&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">use</span> <span class="attr">xlink:href</span>=<span class="string">&quot;#sym01&quot;</span> <span class="attr">x</span>=<span class="string">&quot;0&quot;</span> <span class="attr">y</span>=<span class="string">&quot;50&quot;</span> <span class="attr">width</span>=<span class="string">&quot;75&quot;</span> <span class="attr">height</span>=<span class="string">&quot;38&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">use</span> <span class="attr">xlink:href</span>=<span class="string">&quot;#sym01&quot;</span> <span class="attr">x</span>=<span class="string">&quot;0&quot;</span> <span class="attr">y</span>=<span class="string">&quot;100&quot;</span> <span class="attr">width</span>=<span class="string">&quot;50&quot;</span> <span class="attr">height</span>=<span class="string">&quot;25&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+          
+        
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://xuxb.github.io/2021/03/24/SVG/SVG%20%E5%9F%BA%E7%A1%80%E5%85%83%E7%B4%A0/" title="SVG 基础元素" target="_blank" rel="external">https://xuxb.github.io/2021/03/24/SVG/SVG%20%E5%9F%BA%E7%A1%80%E5%85%83%E7%B4%A0/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xuxb" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xuxb" target="_blank"><span class="text-dark">一枚小笨蛋</span><small class="ml-1x">web 前端开发工程师</small></a></h3>
+        <div>个人简介...</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/03/24/D3.js/%E8%BF%87%E6%B8%A1/" title="过渡"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/03/24/SVG/viewBox%20%E4%B8%8E%20preserveAspectRatio/" title="viewBox 与 preserveAspectRatio"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

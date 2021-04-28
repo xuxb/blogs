@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>可视化交互 | Hexo</title>
+  <meta name="description" content="可视化交互1、事件类型 鼠标事件 click 单击 dbclick 双击 mousemove 鼠标移动 mouseenter 鼠标进入 mouseleave 鼠标离开 mouseover 鼠标滑入 mouseout 鼠标滑出 mousedown 鼠标按下 mouseup 鼠标弹起   触摸事件 touchstart 触摸点在屏幕上接触时 touchmove 触摸点在屏幕上移动时 touchend">
+<meta property="og:type" content="article">
+<meta property="og:title" content="可视化交互">
+<meta property="og:url" content="https://xuxb.github.io/2021/03/24/D3.js/%E5%8F%AF%E8%A7%86%E5%8C%96%E4%BA%A4%E4%BA%92/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="可视化交互1、事件类型 鼠标事件 click 单击 dbclick 双击 mousemove 鼠标移动 mouseenter 鼠标进入 mouseleave 鼠标离开 mouseover 鼠标滑入 mouseout 鼠标滑出 mousedown 鼠标按下 mouseup 鼠标弹起   触摸事件 touchstart 触摸点在屏幕上接触时 touchmove 触摸点在屏幕上移动时 touchend">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-28T02:31:14.932Z">
+<meta property="article:author" content="一枚小笨蛋">
+<meta property="article:tag" content="D3.js">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://xuxb.github.io/2021/03/24/D3.js/%E5%8F%AF%E8%A7%86%E5%8C%96%E4%BA%A4%E4%BA%92/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xuxb" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">一枚小笨蛋</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">web 前端开发工程师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 广东深圳</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/Sass/">Sass</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/D3-js/">D3.js</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SVG/">SVG</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/">杂项</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/D3-js/" rel="tag">D3.js</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSONP/" rel="tag">JSONP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" rel="tag">JavaScript 原理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" rel="tag">JavaScript 基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Performance/" rel="tag">Performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVG/" rel="tag">SVG</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sass/" rel="tag">Sass</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/" rel="tag">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/" rel="tag">server</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" rel="tag">同源策略</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD/" rel="tag">性能</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CSS/" style="font-size: 13.67px;">CSS</a> <a href="/tags/D3-js/" style="font-size: 14px;">D3.js</a> <a href="/tags/JSONP/" style="font-size: 13px;">JSONP</a> <a href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" style="font-size: 13px;">JavaScript 原理</a> <a href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" style="font-size: 13px;">JavaScript 基础</a> <a href="/tags/Performance/" style="font-size: 13px;">Performance</a> <a href="/tags/SVG/" style="font-size: 13.33px;">SVG</a> <a href="/tags/Sass/" style="font-size: 13.33px;">Sass</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/server/" style="font-size: 13.33px;">server</a> <a href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" style="font-size: 13px;">同源策略</a> <a href="/tags/%E6%80%A7%E8%83%BD/" style="font-size: 13px;">性能</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">15</span></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-D3.js/可视化交互" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      可视化交互
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/03/24/D3.js/%E5%8F%AF%E8%A7%86%E5%8C%96%E4%BA%A4%E4%BA%92/" class="article-date">
+	  <time datetime="2021-03-23T16:00:00.000Z" itemprop="datePublished">2021-03-24</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/D3-js/">D3.js</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/D3-js/" rel="tag">D3.js</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/03/24/D3.js/%E5%8F%AF%E8%A7%86%E5%8C%96%E4%BA%A4%E4%BA%92/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        
+          
+            <h1 id="可视化交互"><a href="#可视化交互" class="headerlink" title="可视化交互"></a>可视化交互</h1><h3 id="1、事件类型"><a href="#1、事件类型" class="headerlink" title="1、事件类型"></a>1、事件类型</h3><ul>
+<li>鼠标事件<ul>
+<li><code>click</code> 单击</li>
+<li><code>dbclick</code> 双击</li>
+<li><code>mousemove</code> 鼠标移动</li>
+<li><code>mouseenter</code> 鼠标进入</li>
+<li><code>mouseleave</code> 鼠标离开</li>
+<li><code>mouseover</code> 鼠标滑入</li>
+<li><code>mouseout</code> 鼠标滑出</li>
+<li><code>mousedown</code> 鼠标按下</li>
+<li><code>mouseup</code> 鼠标弹起</li>
+</ul>
+</li>
+<li>触摸事件<ul>
+<li><code>touchstart</code> 触摸点在屏幕上接触时</li>
+<li><code>touchmove</code> 触摸点在屏幕上移动时</li>
+<li><code>touchend</code> 触摸点在屏幕上移开时</li>
+</ul>
+</li>
+<li>缩放、平移事件 <code>d3.behavior.zoom</code><ul>
+<li><code>d3.behavior.zoom</code> 创建一个缩放行为</li>
+<li><code>zoom(selection)</code> 将此缩放行为应用到 selection 上（一般使用 <code>selection.call(zoom)</code>）</li>
+<li><code>zoom.on(type, listener)</code> 设置事件类型和监听器<ul>
+<li><code>zoomstart</code> 缩放开始时</li>
+<li><code>zoom</code> 缩放中</li>
+<li><code>zoomend</code> 缩放结束时</li>
+</ul>
+</li>
+<li><code>zoom.scaleExtent()</code> 设置缩放的最小、最大值，默认为 <code>[0, +∞]</code></li>
+<li><code>zoom.scale()</code> 设置初始的缩放大小</li>
+<li><code>zoom.translate()</code> 设置当前缩放的平移向量，默认为 <code>[0, 0]</code></li>
+<li><code>zoom.duration()</code> 取得或设置双击事件的过渡持续的时间</li>
+<li><code>zoom.x()</code> 设置 X轴 方向的比例尺</li>
+<li><code>zoom.y()</code> 设置 Y轴 方向的比例尺</li>
+</ul>
+</li>
+<li>拖拽事件 <code>d3.behavior.drag</code><ul>
+<li><code>d3.behavior.darg</code> 创建一个拖拽行为</li>
+<li><code>darg(selection)</code> 将此拖拽行为应用到 selection 上（一般使用 <code>selection.call(darg)</code>）</li>
+<li><code>darg.on(type, listener)</code> 设置事件类型和监听器<ul>
+<li><code>dargstart</code> 拖拽开始时</li>
+<li><code>darg</code> 拖拽中</li>
+<li><code>dargend</code> 拖拽结束时</li>
+</ul>
+</li>
+<li><code>dray.origin()</code> 设置拖动行为的原点</li>
+</ul>
+</li>
+</ul>
+<h3 id="2、事件对象-d3-event"><a href="#2、事件对象-d3-event" class="headerlink" title="2、事件对象 d3.event"></a>2、事件对象 <code>d3.event</code></h3><p>说明  <code>d3.evnet</code> 对象是 DOM 事件，并实现了标准事件字段</p>
+<ul>
+<li><code>event.x</code>: 相对于可视区的坐标（与 <code>event.clientX</code> 一样）</li>
+<li><code>event.clientX</code>: 相对于可视区的坐标（与滚动的距离无关，以浏览器左上角为基准）</li>
+<li><code>event.offsetX</code>: 相对于容器的坐标（鼠标与触发事件的元素的距离）</li>
+<li><code>event.pageX</code>: 鼠标位置相对于文档的坐标（包含滚动的距离，以文档左上角为基准）</li>
+<li><code>event.screenX</code>: 鼠标位置相对于屏幕 X 轴的坐标（与滚动的距离无关，以屏幕左上角为基准）</li>
+<li><code>event.translate</code>: 返回鼠标位移的数据，如 <code>[100, 20]</code></li>
+<li><code>event.scale</code>: 返回鼠标缩放的大小，如 <code>1.2</code></li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">        .circle-item &#123;</span><br><span class="line"><span class="css">            fill: none;</span></span><br><span class="line"><span class="css">            stroke: <span class="number">#090</span>;</span></span><br><span class="line"><span class="css">            stroke-<span class="attribute">width</span>: <span class="number">4</span>;</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://d3js.org/d3.v3.js&quot;</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> w = <span class="built_in">document</span>.documentElement.clientWidth;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> h = <span class="built_in">document</span>.documentElement.clientHeight;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> svg = d3.select(<span class="string">&#x27;body&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .append(<span class="string">&#x27;svg&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;width&#x27;</span>, w)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;height&#x27;</span>, h);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">        svg.append(<span class="string">&#x27;text&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;x&#x27;</span>, <span class="number">10</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;y&#x27;</span>, <span class="number">24</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;class&#x27;</span>, <span class="string">&#x27;mouse-info&#x27;</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="function"><span class="keyword">function</span> <span class="title">updateInfo</span>(<span class="params">str</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">            svg.select(<span class="string">&#x27;.mouse-info&#x27;</span>).text(str);</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"><span class="javascript">        svg.on(<span class="string">&#x27;mousemove&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">let</span> event = d3.event;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">let</span> str = <span class="string">`x ：<span class="subst">$&#123;event.offsetX&#125;</span> \n Y: <span class="subst">$&#123;event.offsetY&#125;</span>`</span>;</span></span><br><span class="line">            updateInfo(str);</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line"><span class="javascript">        svg.on(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">let</span> event = d3.event;</span></span><br><span class="line"><span class="javascript">            <span class="built_in">console</span>.log(event);</span></span><br><span class="line"><span class="javascript">            <span class="keyword">let</span> x = event.offsetX;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">let</span> y = event.offsetY;</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">            <span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">            svg.selectAll(<span class="string">&#x27;cirle&#x27;</span>)</span></span><br><span class="line">                .data(data)</span><br><span class="line">                .enter()</span><br><span class="line"><span class="javascript">                .append(<span class="string">&#x27;circle&#x27;</span>)</span></span><br><span class="line"><span class="javascript">                .attr(<span class="string">&#x27;class&#x27;</span>, <span class="string">&#x27;circle-item&#x27;</span>)</span></span><br><span class="line"><span class="javascript">                .attr(<span class="string">&#x27;cx&#x27;</span>, x)</span></span><br><span class="line"><span class="javascript">                .attr(<span class="string">&#x27;cy&#x27;</span>, y)</span></span><br><span class="line"><span class="javascript">                .attr(<span class="string">&#x27;r&#x27;</span>, <span class="number">0</span>)</span></span><br><span class="line">            .transition()</span><br><span class="line">                .duration(2000)</span><br><span class="line"><span class="javascript">                .delay(<span class="function">(<span class="params">d, i</span>) =&gt;</span> <span class="built_in">Math</span>.pow(i + <span class="number">1</span>, <span class="number">2</span>) * <span class="number">100</span>)</span></span><br><span class="line"><span class="javascript">                .ease(<span class="string">&#x27;ease-out&#x27;</span>)</span></span><br><span class="line"><span class="javascript">                .attr(<span class="string">&#x27;r&#x27;</span>, <span class="number">500</span>)</span></span><br><span class="line"><span class="javascript">                .style(<span class="string">&#x27;stroke-width&#x27;</span>, <span class="number">1</span>)</span></span><br><span class="line"><span class="javascript">                .style(<span class="string">&#x27;opacity&#x27;</span>, <span class="number">0</span>)</span></span><br><span class="line"><span class="javascript">                .each(<span class="string">&#x27;end&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                    d3.select(<span class="built_in">this</span>).remove();</span></span><br><span class="line">                &#125;);</span><br><span class="line">                </span><br><span class="line">        &#125;);</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">        .circle-item &#123;</span><br><span class="line"><span class="css">            <span class="attribute">opacity</span>: .<span class="number">5</span>;</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://d3js.org/d3.v3.js&quot;</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> w = <span class="number">800</span>;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> h = <span class="number">600</span>;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> r = <span class="number">60</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> data = [&#123;</span></span><br><span class="line">            x: w / 2 - r,</span><br><span class="line">            y: w / 2 - r</span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            x: w / 2 - r,</span><br><span class="line">            y: w / 2 + r</span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            x: w / 2 + r,</span><br><span class="line">            y: w / 2 - r</span><br><span class="line"></span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            x: w / 2 + r,</span><br><span class="line">            y: w / 2 + r</span><br><span class="line">        &#125;];</span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="function"><span class="keyword">function</span> <span class="title">dragHandler</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">let</span> event = d3.event;</span></span><br><span class="line"><span class="javascript">            d3.select(<span class="built_in">this</span>)</span></span><br><span class="line"><span class="javascript">                .attr(<span class="string">&#x27;transform&#x27;</span>, <span class="string">`translate(<span class="subst">$&#123;event.x&#125;</span>, <span class="subst">$&#123;event.y&#125;</span>)`</span>);</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> drag = d3.behavior.drag().on(<span class="string">&#x27;drag&#x27;</span>, dragHandler);</span></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> color = d3.scale.category10();</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> svg = d3.select(<span class="string">&#x27;body&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .append(<span class="string">&#x27;svg&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;width&#x27;</span>, w)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;height&#x27;</span>, h);</span></span><br><span class="line">            </span><br><span class="line">            </span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> container = svg.append(<span class="string">&#x27;g&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;class&#x27;</span>, <span class="string">&#x27;container&#x27;</span>);</span></span><br><span class="line">            </span><br><span class="line">            </span><br><span class="line"><span class="javascript">        container.selectAll(<span class="string">&#x27;circle&#x27;</span>)</span></span><br><span class="line">            .data(data)</span><br><span class="line">            .enter()</span><br><span class="line"><span class="javascript">            .append(<span class="string">&#x27;circle&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;class&#x27;</span>, <span class="string">&#x27;circle-item&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;transform&#x27;</span>, <span class="function"><span class="params">d</span> =&gt;</span> <span class="string">`translate(<span class="subst">$&#123;d.x&#125;</span>, <span class="subst">$&#123;d.y&#125;</span>)`</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;r&#x27;</span>, <span class="number">60</span>)</span></span><br><span class="line"><span class="javascript">            .style(<span class="string">&#x27;fill&#x27;</span>, <span class="function">(<span class="params">d, i</span>) =&gt;</span> color(i))</span></span><br><span class="line">            .call(drag);</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">        .circle-item &#123;</span><br><span class="line"><span class="css">            fill: <span class="number">#090</span>;</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://d3js.org/d3.v3.js&quot;</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> w = <span class="number">800</span>;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> h = <span class="number">600</span>;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> r = <span class="number">60</span>;</span></span><br><span class="line">        </span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> data = [&#123;</span></span><br><span class="line">            x: w / 2 - r,</span><br><span class="line">            y: w / 2 - r</span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            x: w / 2 - r,</span><br><span class="line">            y: w / 2 + r</span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            x: w / 2 + r,</span><br><span class="line">            y: w / 2 - r</span><br><span class="line">            </span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            x: w / 2 + r,</span><br><span class="line">            y: w / 2 + r</span><br><span class="line">        &#125;];</span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="function"><span class="keyword">function</span> <span class="title">zoomHandler</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">let</span> event = d3.event;</span></span><br><span class="line"><span class="javascript">            d3.select(<span class="string">&#x27;.container&#x27;</span>)</span></span><br><span class="line"><span class="javascript">                .attr(<span class="string">&#x27;transform&#x27;</span>, <span class="string">`translate(<span class="subst">$&#123;event.translate&#125;</span>) scale(<span class="subst">$&#123;event.scale&#125;</span>)`</span>);</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> zoom = d3.behavior.zoom()</span></span><br><span class="line">            .scaleExtent([1, 10])</span><br><span class="line"><span class="javascript">            .on(<span class="string">&#x27;zoom&#x27;</span>, zoomHandler);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> svg = d3.select(<span class="string">&#x27;body&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .append(<span class="string">&#x27;svg&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;width&#x27;</span>, w)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;height&#x27;</span>, h)</span></span><br><span class="line">            .call(zoom);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> container = svg.append(<span class="string">&#x27;g&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;class&#x27;</span>, <span class="string">&#x27;container&#x27;</span>);</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="javascript">        container.selectAll(<span class="string">&#x27;circle&#x27;</span>)</span></span><br><span class="line">            .data(data)</span><br><span class="line">            .enter()</span><br><span class="line"><span class="javascript">            .append(<span class="string">&#x27;circle&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;class&#x27;</span>, <span class="string">&#x27;circle-item&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;transform&#x27;</span>, <span class="function"><span class="params">d</span> =&gt;</span> <span class="string">`translate(<span class="subst">$&#123;d.x&#125;</span>, <span class="subst">$&#123;d.y&#125;</span>)`</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;r&#x27;</span>, <span class="number">60</span>);</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+          
+        
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://xuxb.github.io/2021/03/24/D3.js/%E5%8F%AF%E8%A7%86%E5%8C%96%E4%BA%A4%E4%BA%92/" title="可视化交互" target="_blank" rel="external">https://xuxb.github.io/2021/03/24/D3.js/%E5%8F%AF%E8%A7%86%E5%8C%96%E4%BA%A4%E4%BA%92/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xuxb" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xuxb" target="_blank"><span class="text-dark">一枚小笨蛋</span><small class="ml-1x">web 前端开发工程师</small></a></h3>
+        <div>个人简介...</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/04/27/%E6%9D%82%E9%A1%B9/pm2%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="pm2 常用命令"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/03/24/D3.js/%E5%9D%90%E6%A0%87%E8%BD%B4/" title="坐标轴"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

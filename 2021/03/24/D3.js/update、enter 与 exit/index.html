@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>update、enter 与 exit | Hexo</title>
+  <meta name="description" content="update、enter 与 exit作用：处理选择集和数据集关系不确定的情况，对各种选择集分别作处理。 selection.data() 操作返回的是三个 Virtual selection，这三个 Virtual selection 是 enter、 update 以及 exit。 假设用三个 &lt;p&gt; 元素的选择集（对应的数据分别为 [0, 1, 2]）， 如果将新数据集 [3,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="update、enter 与 exit">
+<meta property="og:url" content="https://xuxb.github.io/2021/03/24/D3.js/update%E3%80%81enter%20%E4%B8%8E%20exit/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="update、enter 与 exit作用：处理选择集和数据集关系不确定的情况，对各种选择集分别作处理。 selection.data() 操作返回的是三个 Virtual selection，这三个 Virtual selection 是 enter、 update 以及 exit。 假设用三个 &lt;p&gt; 元素的选择集（对应的数据分别为 [0, 1, 2]）， 如果将新数据集 [3,">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-28T02:31:29.128Z">
+<meta property="article:author" content="一枚小笨蛋">
+<meta property="article:tag" content="D3.js">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://xuxb.github.io/2021/03/24/D3.js/update%E3%80%81enter%20%E4%B8%8E%20exit/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xuxb" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">一枚小笨蛋</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">web 前端开发工程师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 广东深圳</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/Sass/">Sass</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/D3-js/">D3.js</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SVG/">SVG</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/">杂项</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/D3-js/" rel="tag">D3.js</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSONP/" rel="tag">JSONP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" rel="tag">JavaScript 原理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" rel="tag">JavaScript 基础</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Performance/" rel="tag">Performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVG/" rel="tag">SVG</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sass/" rel="tag">Sass</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/" rel="tag">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/" rel="tag">server</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" rel="tag">同源策略</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD/" rel="tag">性能</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CSS/" style="font-size: 13.67px;">CSS</a> <a href="/tags/D3-js/" style="font-size: 14px;">D3.js</a> <a href="/tags/JSONP/" style="font-size: 13px;">JSONP</a> <a href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" style="font-size: 13px;">JavaScript 原理</a> <a href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" style="font-size: 13px;">JavaScript 基础</a> <a href="/tags/Performance/" style="font-size: 13px;">Performance</a> <a href="/tags/SVG/" style="font-size: 13.33px;">SVG</a> <a href="/tags/Sass/" style="font-size: 13.33px;">Sass</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/server/" style="font-size: 13.33px;">server</a> <a href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" style="font-size: 13px;">同源策略</a> <a href="/tags/%E6%80%A7%E8%83%BD/" style="font-size: 13px;">性能</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">15</span></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-D3.js/update、enter 与 exit" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      update、enter 与 exit
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/03/24/D3.js/update%E3%80%81enter%20%E4%B8%8E%20exit/" class="article-date">
+	  <time datetime="2021-03-23T16:00:00.000Z" itemprop="datePublished">2021-03-24</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/D3-js/">D3.js</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/D3-js/" rel="tag">D3.js</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/03/24/D3.js/update%E3%80%81enter%20%E4%B8%8E%20exit/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        
+          
+            <h1 id="update、enter-与-exit"><a href="#update、enter-与-exit" class="headerlink" title="update、enter 与 exit"></a>update、enter 与 exit</h1><p>作用：处理选择集和数据集关系不确定的情况，对各种选择集分别作处理。</p>
+<p><code>selection.data()</code> 操作返回的是三个 Virtual selection，这三个 Virtual selection 是 enter、 update 以及 exit。</p>
+<p>假设用三个 <code>&lt;p&gt;</code> 元素的选择集（对应的数据分别为 <code>[0, 1, 2]</code>），</p>
+<p>如果将新数据集 [3, 6, 9, 12, 15] 绑定到选择集上，则前三个数据（3，6，9）有与之对应的元素，这部分成为 <code>Update</code><br>而后面两个数据（12，15）没有与之对应的元素，这部分成为 <code>Enter</code></p>
+<p>如果将新数据集 <code>[4, 6]</code> 绑定到选择集上，则前两个数据（4，6）有与之对应的元素，这部分成为 <code>Update</code><br>而原来选择集最后一个数据（2）没有与之对应的元素，这部分成为 <code>Exit</code></p>
+<p>** update、enter、exit的区别**</p>
+<p><code>d3.selectAll(&#39;text&#39;)</code> 的返回值是一个选择集，返回的是当前 DOM 的信息<br><code>d3.selectAll(&#39;text&#39;).data(dataSet)</code> 的返回值是一个选择集，有 <code>enter()</code>、<code>exit()</code> 方法，返回的是绑定前后对比的信息</p>
+<ul>
+<li><code>update</code>: 表示在 DOM 中即将被更新的选择集，update 部分的处理办法一般是：<strong>更新属性值</strong>，如 <code>let updateSelection = svg.selectAll(&#39;circle&#39;).data(dataSet)</code></li>
+<li><code>enter</code>: 表示在 DOM 中即将被添加的选择集，enter 部分的处理办法一般是：<strong>添加元素后，赋予属性值</strong>，如 <code>let enterSelection = svg.selectAll(&#39;circle&#39;).data(dataSet).enter()</code></li>
+<li><code>exit</code>: 表示在 DOM 中即将被删除的选择集，exit 部分的处理办法一般是：<strong>修改属性值，删除元素</strong>，如 <code>let exitSelection = svg.selectAll(&#39;circle&#39;).data(dataSet).exit()</code></li>
+</ul>
+<p>说明：并没有 <code>svg.selectAll(&#39;circle&#39;).data(dataSet).update()</code> 方法，<code>svg.selectAll(&#39;circle&#39;).data(dataSet)</code> 直接返回 Update 选择集（） </p>
+<blockquote>
+<ul>
+<li>比较的是数据集与选择集，而不是比较数据集与选择集中的数据（与 Vue 中的 key 属性、DOM元素复用没有任何联系）</li>
+<li>当有通过数据更新视图时，正确的顺序应该是 <code>update()</code> 、<code>enter()</code>、<code>exit()</code></li>
+<li>重新将数据绑定到选择集上时，不可能同时存在 <code>enter()</code>、<code>exit()</code></li>
+</ul>
+</blockquote>
+<p>对于数组中的数据元素，如果缺少与之对应的 DOM 元素，那么就会有一个占位符来顶替，而 <code>enter()</code> 方法返回的就是这些占位符集合的引用。<br>这个引用后只能链接 <code>append()</code>，<code>insert()</code> 以及 <code>select()</code> 操作符，通过他们来操作该引用所指向的集合。</p>
+<h3 id="data-数据绑定（selection-selectAll-data-enter-append-）"><a href="#data-数据绑定（selection-selectAll-data-enter-append-）" class="headerlink" title="data() 数据绑定（selection.selectAll().data().enter().append()）"></a><code>data()</code> 数据绑定（<code>selection.selectAll().data().enter().append()</code>）</h3><ul>
+<li><code>let selectoin = svg.selectAll(&#39;circle&#39;)</code> 因为 SVG 容器是空的，返回一个新的空选择 <code>selection</code>。 </li>
+<li><code>enterSelectoin = selection.data(dataSet)</code> 将这个选择连接到一组数据，产生三个新的选择，代表三种可能的状态：<code>enter</code>、<code>update</code> 和 <code>exit</code>。由于选择是空的，所以<code>update</code> 和 <code>exit</code> 的 <code>selection</code> 是空的，而 <code>enter</code> 的 <code>selection</code> 包含每个新基准的占位符。</li>
+<li><code>selection.data(dataSet)</code> 返回更新选择，<code>selection.enter()</code> 返回 <code>enter</code> 选择，而进入和退出选择被挂起 。</li>
+<li><code>enterSelectoin.append()</code> 将缺失的元素添加到 SVG 容器中，这会为每个数据附加一个新的 <code>circle</code> 到 SVG 容器。</li>
+</ul>
+<blockquote>
+<p>当把数据分配到一个元素上时，这个数据被存储到该元素的 <code>_data_</code> 属性中, 数据可以通过 <code>_data_</code> 属性被再选。这也就是我们所说的数据绑定到 DOM 元素</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;ie=edge&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>D3.js - enter、update、exit<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">        .container text &#123;</span><br><span class="line"><span class="css">            <span class="attribute">font-size</span>: <span class="number">30px</span>;</span></span><br><span class="line"><span class="css">            fill: <span class="number">#090</span>;</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://d3js.org/d3.v3.js&quot;</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> w = <span class="number">500</span>;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> h = <span class="number">400</span>;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> padding = &#123;</span></span><br><span class="line">            top: 20,</span><br><span class="line">            right: 20,</span><br><span class="line">            bottom: 30,</span><br><span class="line">            left: 40</span><br><span class="line">        &#125;;</span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> dataSet = <span class="string">&#x27;abcdefghijklmn&#x27;</span>.split(<span class="string">&#x27;&#x27;</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> svg = d3.select(<span class="string">&#x27;body&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .append(<span class="string">&#x27;svg&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;width&#x27;</span>, w)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;height&#x27;</span>, h);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="keyword">let</span> container = svg.append(<span class="string">&#x27;g&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;class&#x27;</span>, <span class="string">&#x27;container&#x27;</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;transform&#x27;</span>, <span class="string">`translate(<span class="subst">$&#123;padding.left&#125;</span>, <span class="subst">$&#123;padding.top&#125;</span>)`</span>)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;width&#x27;</span>, w - padding.left - padding.right)</span></span><br><span class="line"><span class="javascript">            .attr(<span class="string">&#x27;height&#x27;</span>, h - padding.top - padding.bottom);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="function"><span class="keyword">function</span> <span class="title">update</span>(<span class="params">dataSet</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">let</span> texts = container.selectAll(<span class="string">&#x27;text&#x27;</span>).data(dataSet<span class="comment">/* , (d) =&gt; d */</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">            <span class="built_in">console</span>.log(dataSet);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">            <span class="comment">// update 部分</span></span></span><br><span class="line"><span class="javascript">            texts.attr(<span class="string">&#x27;x&#x27;</span>, <span class="function">(<span class="params">data, i</span>) =&gt;</span> i * <span class="number">30</span>)</span></span><br><span class="line"><span class="javascript">                .attr(<span class="string">&#x27;y&#x27;</span>, <span class="number">120</span>)</span></span><br><span class="line"><span class="javascript">                .style(<span class="string">&#x27;fill&#x27;</span>, <span class="string">&#x27;#f00&#x27;</span>)</span></span><br><span class="line"><span class="javascript">                .text(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123; <span class="built_in">console</span>.log(<span class="string">&#x27;update ----&gt; &#x27;</span> + data); <span class="keyword">return</span> data; &#125;);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">            <span class="comment">// enter 部分</span></span></span><br><span class="line">            texts.enter()</span><br><span class="line"><span class="javascript">                .append(<span class="string">&#x27;text&#x27;</span>)</span></span><br><span class="line"><span class="javascript">                .attr(<span class="string">&#x27;x&#x27;</span>, <span class="function">(<span class="params">data, i</span>) =&gt;</span> i * <span class="number">30</span>)</span></span><br><span class="line"><span class="javascript">                .attr(<span class="string">&#x27;y&#x27;</span>, <span class="number">120</span>)</span></span><br><span class="line"><span class="javascript">                .style(<span class="string">&#x27;fill&#x27;</span>, <span class="string">&#x27;#0f0&#x27;</span>)</span></span><br><span class="line"><span class="javascript">                .text(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123; <span class="built_in">console</span>.log(<span class="string">&#x27;enter ----&gt; &#x27;</span> + data); <span class="keyword">return</span> data; &#125;);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">            <span class="comment">// exit 部分</span></span></span><br><span class="line">            texts.exit()</span><br><span class="line">                .transition()</span><br><span class="line">                .duration(200)</span><br><span class="line"><span class="javascript">                .style(<span class="string">&#x27;opacity&#x27;</span>, <span class="function">(<span class="params">data</span>) =&gt;</span> &#123; <span class="built_in">console</span>.log(<span class="string">&#x27;exit ----&gt; &#x27;</span> + data); <span class="keyword">return</span> <span class="number">0</span>; &#125;)</span></span><br><span class="line"><span class="javascript">                .style(<span class="string">&#x27;transform&#x27;</span>, <span class="string">&#x27;scale(0)&#x27;</span>)</span></span><br><span class="line">                .remove();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="built_in">window</span>.setInterval(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">let</span> data = [<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, ...d3.shuffle(dataSet).slice(<span class="number">0</span>, <span class="built_in">Math</span>.ceil(<span class="built_in">Math</span>.random() * <span class="number">10</span>))];</span></span><br><span class="line">            update(data);</span><br><span class="line">        &#125;, 1000);</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+          
+        
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://xuxb.github.io/2021/03/24/D3.js/update%E3%80%81enter%20%E4%B8%8E%20exit/" title="update、enter 与 exit" target="_blank" rel="external">https://xuxb.github.io/2021/03/24/D3.js/update%E3%80%81enter%20%E4%B8%8E%20exit/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xuxb" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xuxb" target="_blank"><span class="text-dark">一枚小笨蛋</span><small class="ml-1x">web 前端开发工程师</small></a></h3>
+        <div>个人简介...</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/03/24/D3.js/%E5%B7%A5%E5%85%B7%E5%87%BD%E6%95%B0/" title="工具函数"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/03/24/D3.js/%E5%BD%A2%E7%8A%B6/" title="形状"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
