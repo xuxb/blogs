@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>原型链与继承 | Hexo</title>
+  <meta name="description" content="原型链与继承1、原型链在面向类的语言中，类可以被复制（或实例化）多次，实例化（或者继承）一个类就意味着“把类的 行为复制到物理对象中”，对于每一个新实例来说都会重复这个过程。 在 JavaScript 中，并没有类似的复制机制。Javascript 中不能创建一个类的多个实例，只能创建多个对象，它们的 [[Prototype]] 关联的是同一个对象，这样一个对象就可以通过委托访问另一个对象的属性和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原型链与继承">
+<meta property="og:url" content="https://xuxb.github.io/2021/04/27/JavaScript/%E5%8E%9F%E5%9E%8B%E9%93%BE%E4%B8%8E%E7%BB%A7%E6%89%BF/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="原型链与继承1、原型链在面向类的语言中，类可以被复制（或实例化）多次，实例化（或者继承）一个类就意味着“把类的 行为复制到物理对象中”，对于每一个新实例来说都会重复这个过程。 在 JavaScript 中，并没有类似的复制机制。Javascript 中不能创建一个类的多个实例，只能创建多个对象，它们的 [[Prototype]] 关联的是同一个对象，这样一个对象就可以通过委托访问另一个对象的属性和">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-27T12:24:48.000Z">
+<meta property="article:modified_time" content="2021-04-30T06:38:08.810Z">
+<meta property="article:author" content="一枚小笨蛋">
+<meta property="article:tag" content="JavaScript 基础">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://xuxb.github.io/2021/04/27/JavaScript/%E5%8E%9F%E5%9E%8B%E9%93%BE%E4%B8%8E%E7%BB%A7%E6%89%BF/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xuxb" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">一枚小笨蛋</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">web 前端开发工程师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 广东深圳</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/Sass/">Sass</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/D3-js/">D3.js</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript-%E7%BC%96%E7%A8%8B%E9%A2%98/">JavaScript 编程题</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SVG/">SVG</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web-%E5%AE%89%E5%85%A8/">Web 安全</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/">杂项</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/D3-js/" rel="tag">D3.js</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSONP/" rel="tag">JSONP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" rel="tag">JavaScript 原理</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" rel="tag">JavaScript 基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Performance/" rel="tag">Performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVG/" rel="tag">SVG</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sass/" rel="tag">Sass</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cookie/" rel="tag">cookie</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/" rel="tag">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/" rel="tag">server</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-%E5%AE%89%E5%85%A8/" rel="tag">web 安全</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" rel="tag">同源策略</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD/" rel="tag">性能</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E9%A2%98/" rel="tag">编程题</a><span class="tag-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CSS/" style="font-size: 13.4px;">CSS</a> <a href="/tags/D3-js/" style="font-size: 14px;">D3.js</a> <a href="/tags/HTTP/" style="font-size: 13.8px;">HTTP</a> <a href="/tags/JSONP/" style="font-size: 13px;">JSONP</a> <a href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" style="font-size: 13.6px;">JavaScript 原理</a> <a href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" style="font-size: 13.4px;">JavaScript 基础</a> <a href="/tags/Performance/" style="font-size: 13px;">Performance</a> <a href="/tags/SVG/" style="font-size: 13.2px;">SVG</a> <a href="/tags/Sass/" style="font-size: 13.2px;">Sass</a> <a href="/tags/cookie/" style="font-size: 13px;">cookie</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/server/" style="font-size: 13.2px;">server</a> <a href="/tags/web-%E5%AE%89%E5%85%A8/" style="font-size: 13.6px;">web 安全</a> <a href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" style="font-size: 13px;">同源策略</a> <a href="/tags/%E6%80%A7%E8%83%BD/" style="font-size: 13px;">性能</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E9%A2%98/" style="font-size: 13.8px;">编程题</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">16</span></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-JavaScript/原型链与继承" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      原型链与继承
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/04/27/JavaScript/%E5%8E%9F%E5%9E%8B%E9%93%BE%E4%B8%8E%E7%BB%A7%E6%89%BF/" class="article-date">
+	  <time datetime="2021-04-27T12:24:48.000Z" itemprop="datePublished">2021-04-27</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" rel="tag">JavaScript 基础</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/04/27/JavaScript/%E5%8E%9F%E5%9E%8B%E9%93%BE%E4%B8%8E%E7%BB%A7%E6%89%BF/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        
+          
+            <h1 id="原型链与继承"><a href="#原型链与继承" class="headerlink" title="原型链与继承"></a>原型链与继承</h1><h3 id="1、原型链"><a href="#1、原型链" class="headerlink" title="1、原型链"></a>1、原型链</h3><p>在面向类的语言中，类可以被复制（或实例化）多次，实例化（或者继承）一个类就意味着“把类的 行为复制到物理对象中”，对于每一个新实例来说都会重复这个过程。</p>
+<p>在 JavaScript 中，并没有类似的复制机制。Javascript 中不能创建一个类的多个实例，只能创建多个对象，它们的 <code>[[Prototype]]</code> 关联的是同一个对象，这样一个对象就可以通过委托访问另一个对象的属性和函数。</p>
+<p>JavaScript 中父类和子类的关系只存在于两者构造函数对应的 <code>.prototype</code> 对象中，它们的构造函数之间并不存在直接联系</p>
+<p>JavaScript 中的函数无法真正地复制，只能复制对共享函数对象的引用，JavaScript 对象有一个特殊的 <code>[[Prototype]]</code> 内置属性，其实就是对于其他对象的引用。几乎所有的对象在创建时 <code>[[Prototype]]</code> 属性都会被赋予一个非空的值。</p>
+<p>函数本身并不是构造函数，然而，当在普通的函数调用前面加上 <code>new</code> 关键字之后，就会把这个函数调用变成一个“构造函数 调用”。实际上， <code>new</code> 会劫持所有普通函数并用构造对象的形式来调用它。在 JavaScript 中对于“构造函数”最准确的解释是，所有带 <code>new</code> 的函数调用。</p>
+<p><code>new Foo()</code> 这个函数调用实际上并没有直接创建关联，这个关联只是一个意外的副作用（新创建的对象添加了 <code>__proto__</code> 属性）， <code>new Foo()</code> 只是间接完成了目标：一个关联到其他对象的新对象。更直接的方式是使用 <code>Object.create(...)</code>。</p>
+<p>JavaScript 的 <code>[[Prototype]]</code> 机制本质上就是行为委托机制：<code>[[Prototype]]</code> 存在于对象中的一个内部链接，它会引用其他对象。通常来说，这个链接的作用是：如果在对象上没有找到需要的属性或者方法引用，引擎就会继续在 <code>[[Prototype]]</code> 关联的对象上进行查找。同理，如果在后者中也没有找到需要的引用就会继续查找它的 <code>[[Prototype]</code>] ，以此类推。这一系列对象的链接被称为“原型链”。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line">Foo.prototype.myName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.name;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> Foo( <span class="string">&quot;a&quot;</span> );</span><br><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> Foo( <span class="string">&quot;b&quot;</span> );</span><br><span class="line">a.myName(); <span class="comment">// &quot;a&quot;</span></span><br><span class="line">b.myName(); <span class="comment">// &quot;b&quot;</span></span><br><span class="line">a.constructor === Foo <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 看起来创建 `a` 和 `b` 时会把 `Foo.prototype` 对象复制到这两个对象中，然而事实并不是这样，</span></span><br><span class="line"><span class="comment">// 在创建的过程中， `a` 和 `b` 的内部 [[Prototype]] 都会关联到 `Foo.prototype` 上。</span></span><br><span class="line"><span class="comment">// 当 `a` 和 `b` 中无法找到 `myName` 时，它会在 `Foo.prototype` 上找到。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 看起来 `a.constructor === Foo` 为真意味着 `a` 确实有一个指向 `Foo` 的 `.constructor` 属性，</span></span><br><span class="line"><span class="comment">// 但是事实不是这样，实际上， `.constructor` 引用同样被委托给了 `Foo.prototype` ，而`Foo.prototype.constructor` 默认指向 `Foo`</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2、属性遍历"><a href="#2、属性遍历" class="headerlink" title="2、属性遍历"></a>2、属性遍历</h3><p>使用 <code>for...in</code> 遍历对象时原理和查找 <code>[[Prototype]]</code> 链类似，任何可以通过原型链访问到且 <code>enumerable: true</code> 的属性都会被枚举。使用 <code>in</code> 操作符检查属性在对象中是否存在时，也会查找对象的整条原型链（无论属性是否可枚举）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    name: <span class="string">&#x27;xxb&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(obj, <span class="string">&#x27;age&#x27;</span>, &#123;</span><br><span class="line">    age: <span class="number">24</span>,</span><br><span class="line">    enumerable: <span class="literal">false</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> obj) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(key);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;age&#x27;</span> <span class="keyword">in</span> obj);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;toString&#x27;</span> <span class="keyword">in</span> obj);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、属性设置与屏蔽"><a href="#3、属性设置与屏蔽" class="headerlink" title="3、属性设置与屏蔽"></a>3、属性设置与屏蔽</h3><p>在于原型链上层时 obj.foo = “bar” 会出现的三种情况。</p>
+<ol>
+<li>如果在 [[Prototype]] 链上层存在名为 foo 的普通数据访问属性并且 writable: true ，那就会直接在 obj 中添加一个名为 foo 的新属性，它是屏蔽属性。</li>
+<li>如果在 [[Prototype]] 链上层存在 foo ，但 writable:false，那么无法修改已有属性或者在 obj 上创建屏蔽属性。如果运行在严格模式下，代码会抛出一个错误。否则，这条赋值语句会被忽略。总之，不会发生屏蔽。</li>
+<li>如果在 [[Prototype]] 链上层存在 foo 并且它是一个 setter，那就一定会调用这个 setter。 foo 不会被添加到obj ，也不会重新定义 foo 这个 setter。</li>
+</ol>
+<blockquote>
+<p>[[Prototype]] 链上层的只读属性会阻止 [[Prototype]] 链下层隐式创建（屏蔽）同名属性。这样做主要是为了模拟类属性的继承，比如父类的属性只读级别，则子类的属性应该不高于只读级别。</p>
+</blockquote>
+<blockquote>
+<p>解决第2、3种情况可使用 Object.defineProperty() , 而不是使用 = 赋值</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 情形1 生成屏蔽属性</span></span><br><span class="line"><span class="keyword">var</span> parent = &#123;</span><br><span class="line">    name: <span class="string">&#x27;aaaa&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> son = <span class="built_in">Object</span>.create(parent);</span><br><span class="line">son.name = <span class="string">&#x27;bbbb&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(son.name);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 情形2 赋值时报错</span></span><br><span class="line"><span class="keyword">var</span> parent = &#123;&#125;;</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(parent, <span class="string">&#x27;name&#x27;</span>, &#123;</span><br><span class="line">    value: <span class="string">&#x27;aaa&#x27;</span>,</span><br><span class="line">    writable: <span class="literal">false</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> son = <span class="built_in">Object</span>.create(parent);</span><br><span class="line">son.name = <span class="string">&#x27;bbbb&#x27;</span>;  <span class="comment">// TypeError: Cannot assign to read only property &#x27;name&#x27; of object &#x27;#&lt;Object&gt;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 情形3 赋值失败并执行 `set()`</span></span><br><span class="line"><span class="keyword">var</span> parent = &#123;&#125;;</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(parent, <span class="string">&#x27;name&#x27;</span>, &#123;</span><br><span class="line">    set () &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;set&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> son = <span class="built_in">Object</span>.create(parent);</span><br><span class="line">son.name = <span class="string">&#x27;bbbb&#x27;</span>;  </span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(son.name);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ----- output -----</span></span><br><span class="line"><span class="comment">// set</span></span><br><span class="line"><span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+<h3 id="4、proto-属性"><a href="#4、proto-属性" class="headerlink" title="4、proto 属性"></a>4、<strong>proto</strong> 属性</h3><p>浏览器支持一种非标准的方法来访问内部 <code>[[Prototype]]</code> 属性， <code>.__proto__</code> 的实现大致如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(<span class="built_in">Object</span>.prototype, <span class="string">&quot;__proto__&quot;</span>, &#123;</span><br><span class="line">    get: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Object</span>.getPrototypeOf( <span class="built_in">this</span> );</span><br><span class="line">    &#125;,</span><br><span class="line">    set: <span class="function"><span class="keyword">function</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">Object</span>.setPrototypeOf(<span class="built_in">this</span>, o);</span><br><span class="line">        <span class="keyword">return</span> o;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>可使用 <code>Object.getPrototypeOf()</code>、<code>Object.setPrototypeOf()</code> 替代</p>
+<h3 id="5、实现继承的几种方式"><a href="#5、实现继承的几种方式" class="headerlink" title="5、实现继承的几种方式"></a>5、实现继承的几种方式</h3><h5 id="5-1-使用混入方式实现继承"><a href="#5-1-使用混入方式实现继承" class="headerlink" title="5.1 使用混入方式实现继承"></a>5.1 使用混入方式实现继承</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mixin</span> (<span class="params">sourceObj, targetObj</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> k <span class="keyword">in</span> sourceObj) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!targetObj[k]) &#123;</span><br><span class="line">            targetObj[k] = sourceObj[k];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> targetObj;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Person = &#123;</span><br><span class="line">    name: <span class="string">&#x27;nobody&#x27;</span>,</span><br><span class="line">    showName () &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> stu = mixin(Person, &#123;</span><br><span class="line">    name: <span class="string">&#x27;xxb&#x27;</span>,</span><br><span class="line">    age: <span class="number">24</span>,</span><br><span class="line">    showAge () &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.age);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line">stu.showName();</span><br></pre></td></tr></table></figure>
+
+<h5 id="5-2-使用对象委托实现继承"><a href="#5-2-使用对象委托实现继承" class="headerlink" title="5.2 使用对象委托实现继承"></a>5.2 使用对象委托实现继承</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Person = &#123;</span><br><span class="line">    init (name) &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;,</span><br><span class="line">    showName () &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Student = <span class="built_in">Object</span>.create(Person);</span><br><span class="line"></span><br><span class="line">Student.init = <span class="function"><span class="keyword">function</span> (<span class="params">name, age</span>) </span>&#123;</span><br><span class="line">    Person.init.call(<span class="built_in">this</span>, name);</span><br><span class="line">    <span class="built_in">this</span>.age = age;</span><br><span class="line">&#125;;</span><br><span class="line">Student.showAge = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.age);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> stu = <span class="built_in">Object</span>.create(Student);</span><br><span class="line">stu.init(<span class="string">&#x27;xxb&#x27;</span>, <span class="number">24</span>);</span><br><span class="line">stu.showName();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// `Object.create()` 会创建一个新对象并把它关联到指定的对象就可以充分发挥 [[Prototype]] 机制的作用（委托），</span></span><br><span class="line"><span class="comment">// 并且避免不必要的麻烦（如使用 `new` 的构造函数调用会生成 `.prototype` 和 `.constructor` 引用）。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// `Object.create() `没有其他副作用，ES6添加了辅助函数 `Object.setPrototypeOf()` ，用以实现同样的功能</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="5-3-使用原型链继承"><a href="#5-3-使用原型链继承" class="headerlink" title="5.3 使用原型链继承"></a>5.3 使用原型链继承</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span> (<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line">Person.prototype.showName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Student</span> (<span class="params">name, age</span>) </span>&#123;</span><br><span class="line">    Person.call(<span class="built_in">this</span>, name);</span><br><span class="line">    <span class="built_in">this</span>.age = age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Student.prototype = <span class="built_in">Object</span>.create(Person.prototype);</span><br><span class="line">Student.prototype.constructor = Student;</span><br><span class="line">Student.prototype.showAge = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.age);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span> Student(<span class="string">&#x27;xxb&#x27;</span>, <span class="number">24</span>);</span><br><span class="line">stu.showName();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果使用 `Student.prototype = Person.prototype` 并不会创建一个关联到 `Student.prototype` 的新对象，</span></span><br><span class="line"><span class="comment">// 它只是让 `Student.prototype` 直接引用 `Person.prototype` 对象。</span></span><br><span class="line"><span class="comment">// 因此当执行类似 `Student.prototype.show = ... ` 的赋值语句时会直接修改 `Person.prototype` 对象本身。</span></span><br><span class="line"><span class="comment">// 显然这不是想要的结果，否则根本不需要 `Student` 对象，直接使用 `Person` 就行了。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果使用 `Student.prototype = new Person()` 的确会创建一个关联到 `Student.prototype` 的新对象。</span></span><br><span class="line"><span class="comment">// 但是它使用了 `Person()` 的“构造函数调用”，如果函数 `Person` 有一些副作用（比如给 this 添加数据属性、修改状态、注册到其他对象等）的话，就会影响到 `Student()` 的“后代”</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="5-4-使用-class-实现继承"><a href="#5-4-使用-class-实现继承" class="headerlink" title="5.4 使用 class 实现继承"></a>5.4 使用 class 实现继承</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 es6 的 `class` 实现继承</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="title">constructor</span> (<span class="params">name</span>) &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    showName () &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">extends</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="title">constructor</span> (<span class="params">name, age</span>) &#123;</span><br><span class="line">        <span class="built_in">super</span>(name);</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    showAge () &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.age);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> stu = <span class="keyword">new</span> Student(<span class="string">&#x27;xxb&#x27;</span>, <span class="number">24</span>);</span><br><span class="line">stu.showAge();</span><br></pre></td></tr></table></figure>
+
+<p><strong>class 的优点：</strong></p>
+<ol>
+<li>不需要引用 <code>.prototype</code> 对象；</li>
+<li>不需要通过 <code>Object.create()</code> 来替换 <code>.prototype</code> 对象，也不需要设置 <code>.__proto__</code> 或者 <code>Object.setPrototypeOf()</code> 来指定原型链；</li>
+<li>可以通过 <code>super()</code> 来实现相对多态，这样任何方法都可以引用原型链上层的同名方法。</li>
+<li><code>class</code> 字面语法不能声明属性（只能声明方法），避免原型链末端的“实例”可能会意外地获取 其他地方的属性；</li>
+<li>可以通过 <code>extends</code> 很自然地扩展对象（子）类型，甚至是内置的对象（子）类型。</li>
+</ol>
+<p><strong>class 的缺点：</strong></p>
+<ol>
+<li>class 基本上只是现有 <code>[[Prototype]]</code> 委托机制的一种语法糖。即 class 并不会像传统面向类的语言一样在声明时静态复制所有行为。如果无意修改或者替换了父“类”中的一个方法，那子“类”和所有实例都会受到影响，因为它们在定义时并没有进行复制，只是使用基于 <code>[[Prototype]]</code> 的实时委托。</li>
+<li>用 class 定义看上去不能被修改（静态），实际上依然可以被修改（动态）</li>
+<li>不能定义属性，只能往 <code>prototype</code> 上添加，但这样违背了 <code>class</code> 语法的本意，在实现中暴露了 <code>.prototype</code></li>
+<li>出于性能考虑， <code>super</code> 并不像 <code>this</code> 一样是晚绑定（动态绑定）的，它会在创建时静态绑定。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// `super` 的静态绑定</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">P</span> </span>&#123;</span><br><span class="line">    foo () &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;P.foo&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> <span class="keyword">extends</span> <span class="title">P</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> c1 = <span class="keyword">new</span> C();</span><br><span class="line">c1.foo(); <span class="comment">// &quot;P.foo&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> D = &#123;</span><br><span class="line">    foo: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log( <span class="string">&quot;D.foo&quot;</span> );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> E = &#123;</span><br><span class="line">    foo: C.prototype.foo</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.setPrototypeOf(E, D); <span class="comment">// 把 E 委托到 D</span></span><br><span class="line">E.foo(); <span class="comment">// &quot;P.foo&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+<p><strong>相关方法：</strong></p>
+<ul>
+<li><code>Object.create()</code>：创建一个对象并把这个对象的 <code>[[Prototype]]</code> 关联到指定的对象</li>
+<li><code>Object.setPrototypeOf()</code>：设置一个指定的对象的原型 ( 即内部<code>[[Prototype]]</code>属性）到另一个对象或 <code>null</code></li>
+<li><code>Object.getPrototypeOf()</code>：返回指定对象的原型（即内部 <code>[[Prototype]]</code> 属性的值）</li>
+<li><code>Object.defineProperty()</code>：在一个对象上定义一个新属性，或者修改一个对象的现有属性</li>
+<li><code>Object.prototype.hasOwnproperty()</code>：返回一个布尔值，指示对象是否具有指定的属性作为自身（不继承）属性</li>
+<li><code>Object.prototype.isPrototypeOf()</code>：测试一个对象是否存在于另一个对象的原型链上，与 <code>instanceof</code> 作用类似</li>
+<li><code>fon ... in ...</code>：以任意顺序遍历一个对象的可枚举属性（包括原型链上的属性，主要用于 Object 对象）</li>
+<li><code>fon ... of ...</code>：在可迭代对象(包括 <code>Array</code>, <code>Map</code>, <code>Set</code>, <code>String</code>, <code>arguments</code> 对象等)上创建一个迭代循环，遍历每个属性值</li>
+</ul>
+
+          
+        
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://xuxb.github.io/2021/04/27/JavaScript/%E5%8E%9F%E5%9E%8B%E9%93%BE%E4%B8%8E%E7%BB%A7%E6%89%BF/" title="原型链与继承" target="_blank" rel="external">https://xuxb.github.io/2021/04/27/JavaScript/%E5%8E%9F%E5%9E%8B%E9%93%BE%E4%B8%8E%E7%BB%A7%E6%89%BF/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xuxb" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xuxb" target="_blank"><span class="text-dark">一枚小笨蛋</span><small class="ml-1x">web 前端开发工程师</small></a></h3>
+        <div>个人简介...</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/04/27/JavaScript/JavaScript%20%E5%B1%9E%E6%80%A7%E6%8F%8F%E8%BF%B0%E7%AC%A6/" title="JavaScript 属性描述符"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/04/27/JavaScript/JSONP%20%E5%8E%9F%E7%90%86/" title="JSONP 原理"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

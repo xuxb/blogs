@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>HTTPS 协议 | Hexo</title>
+  <meta name="description" content="HTTPS 协议1、背景介绍HTTP的请求过程中，客户端与服务器之间没有任何身份确认的过程，数据全部明文传输，容易遭到黑客攻击 HTTP 的主要风险如下：  窃听风险：黑客可以获知通信内容 篡改风险：黑客可以修改通信内容 冒充风险：黑客可以冒充他人身份参与通信  HTTPS：（Secure Hypertext Transfer Protocol）安全超文本传输协议，它基于 HTTP 开发，用于在客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTPS 协议">
+<meta property="og:url" content="https://xuxb.github.io/2021/01/14/HTTP/HTTPS%20%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="HTTPS 协议1、背景介绍HTTP的请求过程中，客户端与服务器之间没有任何身份确认的过程，数据全部明文传输，容易遭到黑客攻击 HTTP 的主要风险如下：  窃听风险：黑客可以获知通信内容 篡改风险：黑客可以修改通信内容 冒充风险：黑客可以冒充他人身份参与通信  HTTPS：（Secure Hypertext Transfer Protocol）安全超文本传输协议，它基于 HTTP 开发，用于在客">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.wosign.cn/Basic/images/howsslwork_clip_image002.gif">
+<meta property="article:published_time" content="2021-01-14T07:39:00.000Z">
+<meta property="article:modified_time" content="2021-04-30T07:20:06.353Z">
+<meta property="article:author" content="一枚小笨蛋">
+<meta property="article:tag" content="HTTP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.wosign.cn/Basic/images/howsslwork_clip_image002.gif">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://xuxb.github.io/2021/01/14/HTTP/HTTPS%20%E5%8D%8F%E8%AE%AE/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xuxb" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">一枚小笨蛋</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">web 前端开发工程师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 广东深圳</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/Sass/">Sass</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/D3-js/">D3.js</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript-%E7%BC%96%E7%A8%8B%E9%A2%98/">JavaScript 编程题</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SVG/">SVG</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web-%E5%AE%89%E5%85%A8/">Web 安全</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/">杂项</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/D3-js/" rel="tag">D3.js</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSONP/" rel="tag">JSONP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" rel="tag">JavaScript 原理</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" rel="tag">JavaScript 基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Performance/" rel="tag">Performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVG/" rel="tag">SVG</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sass/" rel="tag">Sass</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cookie/" rel="tag">cookie</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/" rel="tag">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/" rel="tag">server</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-%E5%AE%89%E5%85%A8/" rel="tag">web 安全</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" rel="tag">同源策略</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD/" rel="tag">性能</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E9%A2%98/" rel="tag">编程题</a><span class="tag-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CSS/" style="font-size: 13.4px;">CSS</a> <a href="/tags/D3-js/" style="font-size: 14px;">D3.js</a> <a href="/tags/HTTP/" style="font-size: 13.8px;">HTTP</a> <a href="/tags/JSONP/" style="font-size: 13px;">JSONP</a> <a href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" style="font-size: 13.6px;">JavaScript 原理</a> <a href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" style="font-size: 13.4px;">JavaScript 基础</a> <a href="/tags/Performance/" style="font-size: 13px;">Performance</a> <a href="/tags/SVG/" style="font-size: 13.2px;">SVG</a> <a href="/tags/Sass/" style="font-size: 13.2px;">Sass</a> <a href="/tags/cookie/" style="font-size: 13px;">cookie</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/server/" style="font-size: 13.2px;">server</a> <a href="/tags/web-%E5%AE%89%E5%85%A8/" style="font-size: 13.6px;">web 安全</a> <a href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" style="font-size: 13px;">同源策略</a> <a href="/tags/%E6%80%A7%E8%83%BD/" style="font-size: 13px;">性能</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E9%A2%98/" style="font-size: 13.8px;">编程题</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">16</span></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-HTTP/HTTPS 协议" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      HTTPS 协议
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/01/14/HTTP/HTTPS%20%E5%8D%8F%E8%AE%AE/" class="article-date">
+	  <time datetime="2021-01-14T07:39:00.000Z" itemprop="datePublished">2021-01-14</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/HTTP/">HTTP</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/HTTP/" rel="tag">HTTP</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/01/14/HTTP/HTTPS%20%E5%8D%8F%E8%AE%AE/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        
+          
+            <h1 id="HTTPS-协议"><a href="#HTTPS-协议" class="headerlink" title="HTTPS 协议"></a>HTTPS 协议</h1><h3 id="1、背景介绍"><a href="#1、背景介绍" class="headerlink" title="1、背景介绍"></a>1、背景介绍</h3><p>HTTP的请求过程中，客户端与服务器之间没有任何身份确认的过程，数据全部明文传输，容易遭到黑客攻击</p>
+<p>HTTP 的主要风险如下：</p>
+<ol>
+<li>窃听风险：黑客可以获知通信内容</li>
+<li>篡改风险：黑客可以修改通信内容</li>
+<li>冒充风险：黑客可以冒充他人身份参与通信</li>
+</ol>
+<p>HTTPS：（Secure Hypertext Transfer Protocol）安全超文本传输协议，它基于 HTTP 开发，用于在客户计算机和服务器之间交换信息。它使用安全套接字层 (SSL) 进行信息交换。</p>
+<p>一句话总结 HTTPS的过程：<br>HTTPS 要使客户端与服务器端的通信过程得到安全保证，必须使用的对称加密算法，但是协商对称加密算法的过程，需要使用非对称加密算法来保证安全，然而直接使用非对称加密的过程本身也不安全，会有中间人篡改公钥的可能性，所以客户端与服务器不直接使用公钥，而是使用数字证书签发机构颁发的证书来保证非对称加密过程本身的安全。这样通过这些机制协商出一个对称加密算法，就此双方使用该算法进行加密解密。从而解决了客户端与服务器端之间的通信安全问题。</p>
+<h3 id="2、SSL"><a href="#2、SSL" class="headerlink" title="2、SSL"></a>2、SSL</h3><p>SSL (Secure Sockets Layer 安全套接层)，及其继任者传输层安全（Transport Layer Security，TLS）是为网络通信提供安全及数据完整性的一种安全协议。TLS 与 SSL 在传输层对网络连接进行加密。</p>
+<p>SSL协议位于 TCP/I P协议与各种应用层协议之间，为数据通讯提供安全支持。SSL协议可分为两层： SSL记录协议（SSL Record Protocol）：它建立在可靠的传输协议（如TCP）之上，为高层协议提供数据封装、压缩、加密等基本功能的支持。 SSL握手协议（SSL Handshake Protocol）：它建立在SSL记录协议之上，用于在实际的数据传输开始前，通讯双方进行身份认证、协商加密算法、交换加密密钥等。</p>
+<p><strong>特点：</strong></p>
+<ol>
+<li>认证用户和服务器，确保数据发送到正确的客户机和服务器；</li>
+<li>加密数据以防止数据中途被窃取；</li>
+<li>维护数据的完整性，确保数据在传输过程中不被改变。</li>
+</ol>
+<h3 id="3、加密算法"><a href="#3、加密算法" class="headerlink" title="3、加密算法"></a>3、加密算法</h3><h4 id="3-1-对称加密算法"><a href="#3-1-对称加密算法" class="headerlink" title="3.1 对称加密算法"></a>3.1 对称加密算法</h4><p>在对称加密算法中，数据发信方将明文（原始数据）和加密密钥一起经过特殊加密算法处理后，使其变成复杂的加密密文发送出去。收信方收到密文后，若想解读原文，则需要使用加密用过的密钥及相同算法的逆算法对密文进行解密，才能使其恢复成可读明文。</p>
+<blockquote>
+<p>在对称加密算法中，使用的密钥只有一个，发收信双方都使用这个密钥对数据进行加密和解密，这就要求解密方事先必须知道加密 <strong>密钥</strong> 和 <strong>加密算法</strong>。</p>
+</blockquote>
+<p>特点：加密强度大，难以破解，加密解密速度快</p>
+<p>常见的对称加密算法：<strong>AES</strong> 、<strong>RC4</strong> 、<strong>3DES</strong></p>
+<h4 id="3-2-非对称加密算法"><a href="#3-2-非对称加密算法" class="headerlink" title="3.2 非对称加密算法"></a>3.2 非对称加密算法</h4><p>非对称加密算法需要两个密钥：公开密钥（publickey）和私有密钥（privatekey）。</p>
+<blockquote>
+<ul>
+<li>如果用公开密钥对数据进行加密，只有用对应的私有密钥才能解密；</li>
+<li>如果用私有密钥对数据进行加密，那么只有用对应的公开密钥才能解密；</li>
+</ul>
+</blockquote>
+<p>特点：性能较低，但是安全性超强</p>
+<p>常见的非对称加密算法：<strong>RSA</strong> 、<strong>DSA/DSS</strong>、 <strong>DH</strong> 、、RSA、DSA、ECDSA、 DH</p>
+<h4 id="3-3-Hash-算法"><a href="#3-3-Hash-算法" class="headerlink" title="3.3 Hash 算法"></a>3.3 Hash 算法</h4><p>说明：将任意长度的信息转换为较短的固定长度的值，通常其长度要比信息小得多，且算法不可逆。</p>
+<p>常见的 hash 算法：<strong>MD5</strong>、<strong>SHA-1</strong>、<strong>SHA-2</strong>、<strong>SHA-256</strong></p>
+<p><strong>结论：</strong><br><strong>非对称算法</strong> 强度复杂、安全性依赖于算法与密钥但是由于其 <strong>算法复杂</strong>，而使得加密解密速度没有对称加密解密的速度快，公钥加密目前只能用来作 <strong>密钥交换</strong> 或者 <strong>内容签名</strong>，<strong>不适合用来做应用层传输内容的加解密会话密钥客户端在认证完服务器</strong>。获得服务器的公钥之后，利用该公钥与服务器进行加密通信，协商出两个会话密钥，分别是用于加密客户端往服务端发送数据的客户端会话密钥，和用于加密服务端往客户端发送数据的服务端会话密钥。在已有服务器公钥，可以加密通讯的前提下，还要协商两个对称密钥的原因，是因为非对称加密相对复杂度更高，<strong>在数据传输过程中，使用对称加密，可以节省计算资源</strong>。另外，会话密钥是随机生成，每次协商都会有不一样的结果，所以安全性也比较高。</p>
+<p><strong>使用场景：</strong> </p>
+<ul>
+<li>甲方生成一对密钥并将其中的公用密钥公开；得到该公用密钥的乙方使用该密钥对机密信息进行加密后再发送给甲方；甲方再用自己保存的另一把专用密钥对加密后的信息进行解密。</li>
+<li>甲方可以使用乙方的公钥对机密信息进行签名后再发送给乙方；乙方再用自己的私匙对数据进行验签。</li>
+</ul>
+<h3 id="4、数据加密的方式"><a href="#4、数据加密的方式" class="headerlink" title="4、数据加密的方式"></a>4、数据加密的方式</h3><h5 id="方式-1：使用对称加密"><a href="#方式-1：使用对称加密" class="headerlink" title="方式 1：使用对称加密"></a>方式 1：<strong>使用对称加密</strong></h5><ul>
+<li>客户端发送给服务器的数据使用 <strong>对称秘钥</strong> 加密，服务器使用 <strong>对称秘钥</strong> 解密</li>
+<li>服务器发送给客户端的数据使用 <strong>对称秘钥</strong> 加密，客户端使用 <strong>对称秘钥</strong> 解密</li>
+</ul>
+<p>缺点：需维护大量的秘钥、秘钥容易泄露</p>
+<h5 id="方式-2：使用非对称加密"><a href="#方式-2：使用非对称加密" class="headerlink" title="方式 2：使用非对称加密"></a>方式 2：<strong>使用非对称加密</strong></h5><ul>
+<li>客户端发送给服务器的数据使用 <strong>公钥</strong> 加密，服务器使用 <strong>私钥</strong> 解密</li>
+<li>服务器发送给客户端的数据使用 <strong>私钥</strong> 加密，客户端使用 <strong>公钥</strong> 解密</li>
+</ul>
+<p>缺点：公钥是公开的，服务器发送给客户端的数据的数据容易被截获</p>
+<h5 id="方式-3：同时使用对称加密、非对称加密"><a href="#方式-3：同时使用对称加密、非对称加密" class="headerlink" title="方式 3：同时使用对称加密、非对称加密"></a>方式 3：<strong>同时使用对称加密、非对称加密</strong></h5><ul>
+<li>客户端发送给服务器的 <strong>对称加密算法、对称秘钥</strong> 使用 <strong>公钥</strong> 加密</li>
+<li>服务器发送给客户端的数据用此 <strong>对称加密算法、对称秘钥</strong> 加密，<strong>对称秘钥</strong> 协商完成</li>
+<li>客户端发送给服务器的数据使用 <strong>协商的对称秘钥</strong> 加密，服务器使用 <strong>协商的对称秘钥</strong> 解密</li>
+<li>服务器发送给的客户端数据使用 <strong>协商的对称秘钥</strong> 加密，客户端使用 <strong>协商的对称秘钥</strong> 解密</li>
+</ul>
+<blockquote>
+<p>问题：公钥加密（非对称加密）计算量太大，如何减少耗用的时间？<br>解决方法：每一次对话（session），客户端和服务器端都生成一个 <strong>对话密钥</strong>（双方协商的对称秘钥），用它来加密信息。由于 <strong>对话密钥</strong> 是对称加密，所以运算速度非常快，而服务器公钥只用于加密 <strong>对话密钥</strong> 本身，这样就减少了加密运算的消耗时间。</p>
+</blockquote>
+<p><img src="https://www.wosign.cn/Basic/images/howsslwork_clip_image002.gif" alt="HTTPS 加密过程"></p>
+<p>很明显，方式 3 比较合适 HTTP 的数据加密，但依然有 <strong>两个</strong> 问题：</p>
+<ol>
+<li>客户端如何获得公钥</li>
+<li>如何确认服务器是真实的而不是黑客</li>
+</ol>
+<blockquote>
+<p>获取公钥的过程并不能保证安全，似乎又得重新进行一次加密的过程（先有鸡还是先有蛋的问题），So what to do…</p>
+</blockquote>
+<h3 id="5、SSL-证书"><a href="#5、SSL-证书" class="headerlink" title="5、SSL 证书"></a>5、SSL 证书</h3><p>SSL证书，也称为服务器 SSL 证书，是遵守 SSL 协议的一种数字证书，由全球信任的证书颁发机构 (Certificate Authority，简称 CA) 验证服务器身份后颁发。将SSL证书安装在网站服务器上，可实现网站身份验证和数据加密传输双重功能。</p>
+<p>SSL 证书能同时解决了 <strong>公钥获取</strong> 问题和 <strong>黑客冒充</strong> 问题</p>
+<blockquote>
+<p>每种支持 HTTPS 的浏览器都内置的许多 CA 中心的公钥信息，CA 中心是浏览器开发商信任的授权机构，它为有需要的网站颁发用于验证的服务器公钥，颁发前 CA 中心应尽量确认申请者的身份，并确保颁发的服务器证书确实是由该域名使用的。<br/><br>至于CA中心的具体实现上，就是在创建一个新的 HTTPS 连接时，浏览器端收到服务器的签名公钥，验证签名后（除非 CA 的私钥泄漏，否则签名无法被伪造），检查证书里被签名的 cn 项（Common Name，常用名称）或 subjectAltName 项的值，由此确认对方确实是浏览器真正要访问的服务器，并确认该公钥不在 CA 机构的公开撤销列表里（例如，证书是假冒或欺诈手段获取到的）。如果所有检查都通过了，浏览器就可以用这个公钥加密信息并传回给服务器端，通过这种方式，确认只有特定的接收者才能对加密信息进行解密。</p>
+</blockquote>
+<p>SSL 证书是 CA 中心用自己 <strong>私钥</strong> 对申请者的信息进行加密的数据，当用户访问服务器是 SSL 证书从服务器下载到本地，然后浏览器内置了权威的 CA 中心的 <strong>私钥</strong>，用此 <strong>私钥</strong> 解密 SSL 证书中的数据，如果客户端计算出来的证书编号（使用证书中的 <strong>签名算法</strong> 进行计算）与证书中的证书编号相同，则验证通过。</p>
+<p><strong>SSL 证书包含的具体内容如下：</strong></p>
+<ul>
+<li>Version 版本</li>
+<li>Serial Number序列号</li>
+<li>Algorithm ID 算法标识</li>
+<li>Issuer 颁发者</li>
+<li>Validity 有效期</li>
+<li>Not Before 有效起始日期</li>
+<li>Not After 有效终止日期</li>
+<li>Subject 使用者</li>
+<li>Subject Public Key Info 使用者公钥信息</li>
+<li>Public Key Algorithm公钥算法</li>
+<li>Subject Public Key公钥</li>
+<li>Issuer Unique Identifier (Optional) 颁发者唯一标识（CA 中心）</li>
+<li>Subject Unique Identifier (Optional) 使用者唯一标识</li>
+<li>Extensions (Optional) 扩展</li>
+<li>…</li>
+<li>Certificate Signature Algorithm 证书签名算法（MD5 算法）</li>
+<li>Certificate Signature 证书签名</li>
+</ul>
+<p><strong>验证步骤：</strong></p>
+<ol>
+<li>首先浏览器读取证书中的证书所有者、有效期等信息进行一一校验</li>
+<li>浏览器开始查找操作系统中已内置的受信任的证书发布机构 CA，与服务器发来的证书中的颁发者 CA 比对，用于校验证书是否为合法机构颁发 </li>
+<li>如果找不到，浏览器就会报错，说明服务器发来的证书是不可信任的。</li>
+<li>如果找到，那么浏览器就会从操作系统中取出颁发者 CA  的公钥，然后对服务器发来的证书里面的签名进行解密</li>
+<li>浏览器使用相同的 hash 算法计算出服务器发来的证书的 hash 值，将这个计算的 hash 值与证书中签名做对比</li>
+<li>对比结果一致，则证明服务器发来的证书合法，没有被冒充</li>
+<li>此时浏览器就可以读取证书中的公钥，用于后续加密了</li>
+</ol>
+<blockquote>
+<p>认证信息 —哈希算法—&gt;  摘要 —私钥加密—&gt; 数字签名</p>
+</blockquote>
+<h3 id="6、HTTPS-的特点"><a href="#6、HTTPS-的特点" class="headerlink" title="6、HTTPS 的特点"></a>6、HTTPS 的特点</h3><h4 id="HTTPS-优点"><a href="#HTTPS-优点" class="headerlink" title="HTTPS 优点"></a>HTTPS 优点</h4><ol>
+<li>所有信息都是加密传播，黑客无法窃听</li>
+<li>具有校验机制，一旦被篡改，通信双方会立刻发现</li>
+<li>配备身份证书，防止身份被冒充</li>
+</ol>
+<h4 id="HTTPS-缺点"><a href="#HTTPS-缺点" class="headerlink" title="HTTPS 缺点"></a>HTTPS 缺点</h4><ol>
+<li>SSL 证书费用很高，以及其在服务器上的部署、更新维护非常繁琐</li>
+<li>HTTPS 降低用户访问速度（多次握手）</li>
+<li>网站改用 HTTPS 以后，由HTTP 跳转到 HTTPS 的方式增加了用户访问耗时（多数网站采用 302 跳转）</li>
+<li>HTTPS 涉及到的安全算法会消耗 CPU 资源，需要增加大量机器（https 访问过程需要加解密）</li>
+</ol>
+
+          
+        
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://xuxb.github.io/2021/01/14/HTTP/HTTPS%20%E5%8D%8F%E8%AE%AE/" title="HTTPS 协议" target="_blank" rel="external">https://xuxb.github.io/2021/01/14/HTTP/HTTPS%20%E5%8D%8F%E8%AE%AE/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xuxb" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xuxb" target="_blank"><span class="text-dark">一枚小笨蛋</span><small class="ml-1x">web 前端开发工程师</small></a></h3>
+        <div>个人简介...</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/01/14/HTTP/HTTP%20%E5%8D%8F%E8%AE%AE/" title="HTTP 协议"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/01/14/HTTP/CDN/" title="CDN"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

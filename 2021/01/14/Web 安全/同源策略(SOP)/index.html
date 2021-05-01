@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>同源策略（SOP） | Hexo</title>
+  <meta name="description" content="同源策略（SOP）同源策略（Same Origin Policy） 定义：除非所处的两个页面的协议、DNS域名、端口都完全一致，否则两个独立的 JavaScript 运行环境不能访问彼此的 DOM，其他任何跨文档的 JavaScript DOM 访问也会失败。 说明：两个 URL 的协议、域名和端口相同，则表示他们同源。对于不同源的 document 或脚本，对当前 document 读取或设置某">
+<meta property="og:type" content="article">
+<meta property="og:title" content="同源策略（SOP）">
+<meta property="og:url" content="https://xuxb.github.io/2021/01/14/Web%20%E5%AE%89%E5%85%A8/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5(SOP)/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="同源策略（SOP）同源策略（Same Origin Policy） 定义：除非所处的两个页面的协议、DNS域名、端口都完全一致，否则两个独立的 JavaScript 运行环境不能访问彼此的 DOM，其他任何跨文档的 JavaScript DOM 访问也会失败。 说明：两个 URL 的协议、域名和端口相同，则表示他们同源。对于不同源的 document 或脚本，对当前 document 读取或设置某">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-14T07:44:00.000Z">
+<meta property="article:modified_time" content="2021-04-30T07:34:20.135Z">
+<meta property="article:author" content="一枚小笨蛋">
+<meta property="article:tag" content="web 安全">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://xuxb.github.io/2021/01/14/Web%20%E5%AE%89%E5%85%A8/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5(SOP)/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xuxb" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">一枚小笨蛋</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">web 前端开发工程师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 广东深圳</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/Sass/">Sass</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/D3-js/">D3.js</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript-%E7%BC%96%E7%A8%8B%E9%A2%98/">JavaScript 编程题</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SVG/">SVG</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web-%E5%AE%89%E5%85%A8/">Web 安全</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/">杂项</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/D3-js/" rel="tag">D3.js</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSONP/" rel="tag">JSONP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" rel="tag">JavaScript 原理</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" rel="tag">JavaScript 基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Performance/" rel="tag">Performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVG/" rel="tag">SVG</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sass/" rel="tag">Sass</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cookie/" rel="tag">cookie</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/" rel="tag">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/" rel="tag">server</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-%E5%AE%89%E5%85%A8/" rel="tag">web 安全</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" rel="tag">同源策略</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD/" rel="tag">性能</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E9%A2%98/" rel="tag">编程题</a><span class="tag-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CSS/" style="font-size: 13.4px;">CSS</a> <a href="/tags/D3-js/" style="font-size: 14px;">D3.js</a> <a href="/tags/HTTP/" style="font-size: 13.8px;">HTTP</a> <a href="/tags/JSONP/" style="font-size: 13px;">JSONP</a> <a href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" style="font-size: 13.6px;">JavaScript 原理</a> <a href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" style="font-size: 13.4px;">JavaScript 基础</a> <a href="/tags/Performance/" style="font-size: 13px;">Performance</a> <a href="/tags/SVG/" style="font-size: 13.2px;">SVG</a> <a href="/tags/Sass/" style="font-size: 13.2px;">Sass</a> <a href="/tags/cookie/" style="font-size: 13px;">cookie</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/server/" style="font-size: 13.2px;">server</a> <a href="/tags/web-%E5%AE%89%E5%85%A8/" style="font-size: 13.6px;">web 安全</a> <a href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" style="font-size: 13px;">同源策略</a> <a href="/tags/%E6%80%A7%E8%83%BD/" style="font-size: 13px;">性能</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E9%A2%98/" style="font-size: 13.8px;">编程题</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">16</span></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Web 安全/同源策略(SOP)" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      同源策略（SOP）
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/01/14/Web%20%E5%AE%89%E5%85%A8/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5(SOP)/" class="article-date">
+	  <time datetime="2021-01-14T07:44:00.000Z" itemprop="datePublished">2021-01-14</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Web-%E5%AE%89%E5%85%A8/">Web 安全</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/web-%E5%AE%89%E5%85%A8/" rel="tag">web 安全</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/01/14/Web%20%E5%AE%89%E5%85%A8/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5(SOP)/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        
+          
+            <h1 id="同源策略（SOP）"><a href="#同源策略（SOP）" class="headerlink" title="同源策略（SOP）"></a>同源策略（SOP）</h1><p>同源策略（Same Origin Policy）</p>
+<p>定义：除非所处的两个页面的协议、DNS域名、端口都完全一致，否则两个独立的 JavaScript 运行环境不能访问彼此的 DOM，其他任何跨文档的 JavaScript DOM 访问也会失败。</p>
+<p>说明：两个 URL 的协议、域名和端口相同，则表示他们同源。对于不同源的 <strong>document</strong> 或脚本，对当前 <strong>document</strong> 读取或设置某些属性。</p>
+<blockquote>
+<p><code>协议</code>、<code>元素</code>、<code>端口</code>三者组成的算法叫做 <strong>源</strong>。</p>
+</blockquote>
+<blockquote>
+<p>同源策略开始时只是用于现在对 DOM 结构的访问，之后扩展为保护 JavaScript 对跟对象下的某些敏感数据，如 <code>cookie</code>、<code>localStoreage</code>、Ajax 请求等，但同源策略机制并非包含所有，如非同源的脚本对任意窗口调用 <code>location.assign()</code> 、<code>location.replace()</code>。</p>
+</blockquote>
+<p>作用：防止跨域读写某些资源，为浏览器提供沙箱环境，使进程在一个相对独立的空间运行，能在一定程度上保护浏览器安全。</p>
+<blockquote>
+<p>同源策略无法和全局身份认证、SSL 状态、网络上下文环境以及众多有浏览器管理涉及安全的其他参数进行同步<br>A 网站载入 B 网站的脚本，则该脚本的源为 A 网站，只有和当前页文档同源的脚本才会被执行<br>在浏览器中，<code>&lt;script&gt;</code>、<code>&lt;img&gt;</code>、<code>&lt;iframe&gt;</code>、<code>&lt;link&gt;</code> 等标签都可以加载跨域资源，而不受同源限制<br>XMLHttpRequest 受到同源策略的约束，不能够跨域访问资源，可通过目标域返回的 HTTP 头来授权是否允许跨域访问</p>
+</blockquote>
+<h3 id="1-跨文档通信的限制（相关网站间通信）"><a href="#1-跨文档通信的限制（相关网站间通信）" class="headerlink" title="1 跨文档通信的限制（相关网站间通信）"></a>1 跨文档通信的限制（相关网站间通信）</h3><ol>
+<li>设置 <code>document.domain</code>（比较复杂、同时也有安全问题，不推荐使用）</li>
+<li>使用 <code>windown.postMessage</code>、<code>window.onmessage</code></li>
+</ol>
+<h3 id="2-XMLHttpRequest-的同源策略"><a href="#2-XMLHttpRequest-的同源策略" class="headerlink" title="2 XMLHttpRequest 的同源策略"></a>2 XMLHttpRequest 的同源策略</h3><p>老版本的 <strong>XMLHttpRequest Level 1</strong>，有如下几个缺点：</p>
+<ul>
+<li>只支持文本数据的传送，无法用来读取和上传二进制文件。</li>
+<li>传送和接收数据时，没有进度信息，只能提存在 没有完成。</li>
+<li>受到”同域限制”（Same Origin: Origin  Po时，licy），只能向同一域名的服务器请求数据。</li>
+</ul>
+<p>新版本的 <strong>XMLHttpRequest Level 2</strong>，新增了如下几个功能：</p>
+<ul>
+<li>可以设置HTTP请求的时限（超时时间）</li>
+<li>可以使用 FormData 对象管理表单数据</li>
+<li>可以上传文件（二进制数据）</li>
+<li>可以请求不同域名下的数据（跨域请求）</li>
+<li>可以获取服务器端的二进制数据</li>
+<li>可以获得数据传输的进度信息</li>
+</ul>
+<blockquote>
+<p>跨域资源共享（CORS）是针对 XMLHttpRequrest 的意向建设性扩展，用这种方式发送跨域 HTTP 请求时，由于 XMLHttpRequest 受到同源策略的约束，请求结果会被浏览器拦截，当响应头存在 <code>Access-Control-Allow-Origin: Origin</code> 字段时，XMLHttpRequest 才能访问响应结果</p>
+</blockquote>
+<h3 id="3-Web-Storeage-的同源策略"><a href="#3-Web-Storeage-的同源策略" class="headerlink" title="3 Web Storeage 的同源策略"></a>3 Web Storeage 的同源策略</h3><p>localStorage 对象实现的是与站点源性相关的持久存储，关闭浏览器之后 localStorage 任然有效，而 sessionStorage 则绑定了当前浏览器窗口，提供的是临时的缓存机制，在浏览回话结束之后被清除掉。</p>
+<ul>
+<li>localStorage 的大小大约为 5M，而 Cookie 的单个大小为 4K</li>
+<li>localStorage 的值类型限定为 string类型，在读取数据时需要进行一些转换</li>
+<li>localStorage 在浏览器的隐私模式下面是不可读取的</li>
+<li>localStorage 本质上是对字符串的读取，如果存储内容多的话会消耗内存空间，会导致页面变卡</li>
+<li>localStorage 不能被爬虫抓取到</li>
+</ul>
+<h3 id="4-Cookie-的安全策略"><a href="#4-Cookie-的安全策略" class="headerlink" title="4 Cookie 的安全策略"></a>4 Cookie 的安全策略</h3><p>Cookie 的出现要早于同源策略，所以两者在某些方面可能会存在一些问题。</p>
+<p>网站服务器对 Cookie 提供了两个特殊的可单独设置的标记： <strong>httpOnly</strong> 和 <strong>secure</strong> 。</p>
+<ul>
+<li><strong>httpOnly</strong> 标签可以禁止使用 <strong>document.cookle</strong> API 来访问页面的 Cookie ，这样即使页面真的被注入了恶意代码，也无法简单地用这个 API 复制出用户的身份信息。</li>
+<li><strong>secure</strong> 标签使得 Cookie 无法被用在非加密协议的通道里，这样就必须使用 HTTPS 服务所以能防御主动攻击。</li>
+</ul>
+<p>当依赖于 HTTP Cookies 做身份认证时：</p>
+<ul>
+<li>使用 <strong>httpOnly</strong> 标签；设计 Web 应用时谨记不要让 Javascript 直接访问到身份授权的 Cookie 信息。需要把敏感 Cookie 的有效范围设呈得越小越好，最好不要指定 Cookie 的 domain 值。</li>
+<li>如果应用是完全墓于 HTTPS 的，那 Cookie 就应该标记为 <strong>secure</strong> ，而且必须时 Cookie 注入有完善的处理（ HTTP 运行环境可能导致标记为 <strong>secure</strong> 的 Cookie 被覆盖，即使无法被读取）对 Cookie 进行加密签名也许能防范这种超出控制的墓改行为，但也仍然无法阻止受害者的 Cookie 被替换成另一组由合法方式获取的 Cookie 身份。</li>
+</ul>
+
+          
+        
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://xuxb.github.io/2021/01/14/Web%20%E5%AE%89%E5%85%A8/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5(SOP)/" title="同源策略（SOP）" target="_blank" rel="external">https://xuxb.github.io/2021/01/14/Web%20%E5%AE%89%E5%85%A8/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5(SOP)/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xuxb" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xuxb" target="_blank"><span class="text-dark">一枚小笨蛋</span><small class="ml-1x">web 前端开发工程师</small></a></h3>
+        <div>个人简介...</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/01/14/Web%20%E5%AE%89%E5%85%A8/cookie/" title="Cookie"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/01/14/Web%20%E5%AE%89%E5%85%A8/%E8%B7%A8%E5%9F%9F%E8%B5%84%E6%BA%90%E5%85%B1%E4%BA%AB(CORS)/" title="跨域资源共享（CORS）"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
