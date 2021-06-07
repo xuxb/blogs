@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>前端性能优化 | Hexo</title>
+  <meta name="description" content="前端性能优化一、代码层面1.1 减少 DOM 元素DOM 元素越多、越复杂，则 DOM 操作（即重绘、重排）会越慢 优化方式：  可以使用伪元素、阴影、CSS 实现的内容尽量不要使用 DOM 实现 按需加载，减少不必要的渲染 结构合理，语义化标签  1.2 降低 CSS 选择器的复杂性CSS 选择器的匹配规则是是从右往左的，即先找到符合条件的元素，然后再匹配父元素进行过滤（why? 符合条件的元素">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端性能优化">
+<meta property="og:url" content="https://xuxb.github.io/2021/05/24/HTML/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前端性能优化一、代码层面1.1 减少 DOM 元素DOM 元素越多、越复杂，则 DOM 操作（即重绘、重排）会越慢 优化方式：  可以使用伪元素、阴影、CSS 实现的内容尽量不要使用 DOM 实现 按需加载，减少不必要的渲染 结构合理，语义化标签  1.2 降低 CSS 选择器的复杂性CSS 选择器的匹配规则是是从右往左的，即先找到符合条件的元素，然后再匹配父元素进行过滤（why? 符合条件的元素">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-24T08:32:28.000Z">
+<meta property="article:modified_time" content="2021-06-07T06:46:20.877Z">
+<meta property="article:author" content="一枚小笨蛋">
+<meta property="article:tag" content="面试题">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://xuxb.github.io/2021/05/24/HTML/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xuxb" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">一枚小笨蛋</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">web 前端开发工程师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 广东深圳</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/Sass/">Sass</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/D3-js/">D3.js</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript-%E7%BC%96%E7%A8%8B%E9%A2%98/">JavaScript 编程题</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SVG/">SVG</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web-%E5%AE%89%E5%85%A8/">Web 安全</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/">杂项</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95%E9%A2%98/">算法题</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/">面试题</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/D3-js/" rel="tag">D3.js</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSONP/" rel="tag">JSONP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" rel="tag">JavaScript 原理</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" rel="tag">JavaScript 基础</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Performance/" rel="tag">Performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVG/" rel="tag">SVG</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sass/" rel="tag">Sass</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cookie/" rel="tag">cookie</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/" rel="tag">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/" rel="tag">server</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-%E5%AE%89%E5%85%A8/" rel="tag">web 安全</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" rel="tag">同源策略</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD/" rel="tag">性能</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%80%E5%B7%A7%E7%AF%87/" rel="tag">技巧篇</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" rel="tag">算法题</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E9%A2%98/" rel="tag">编程题</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CSS/" style="font-size: 13.25px;">CSS</a> <a href="/tags/D3-js/" style="font-size: 13.88px;">D3.js</a> <a href="/tags/HTTP/" style="font-size: 13.63px;">HTTP</a> <a href="/tags/JSONP/" style="font-size: 13px;">JSONP</a> <a href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" style="font-size: 13.5px;">JavaScript 原理</a> <a href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" style="font-size: 13.38px;">JavaScript 基础</a> <a href="/tags/Performance/" style="font-size: 13px;">Performance</a> <a href="/tags/SVG/" style="font-size: 13.13px;">SVG</a> <a href="/tags/Sass/" style="font-size: 13.13px;">Sass</a> <a href="/tags/cookie/" style="font-size: 13px;">cookie</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/server/" style="font-size: 13.13px;">server</a> <a href="/tags/web-%E5%AE%89%E5%85%A8/" style="font-size: 13.5px;">web 安全</a> <a href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" style="font-size: 13px;">同源策略</a> <a href="/tags/%E6%80%A7%E8%83%BD/" style="font-size: 13px;">性能</a> <a href="/tags/%E6%8A%80%E5%B7%A7%E7%AF%87/" style="font-size: 13.88px;">技巧篇</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 13.25px;">数据结构</a> <a href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" style="font-size: 14px;">算法题</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E9%A2%98/" style="font-size: 13.75px;">编程题</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 13.13px;">面试题</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-HTML/前端性能优化" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      前端性能优化
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/05/24/HTML/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="article-date">
+	  <time datetime="2021-05-24T08:32:28.000Z" itemprop="datePublished">2021-05-24</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/">面试题</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/05/24/HTML/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        
+          
+            <h1 id="前端性能优化"><a href="#前端性能优化" class="headerlink" title="前端性能优化"></a>前端性能优化</h1><h2 id="一、代码层面"><a href="#一、代码层面" class="headerlink" title="一、代码层面"></a>一、代码层面</h2><h3 id="1-1-减少-DOM-元素"><a href="#1-1-减少-DOM-元素" class="headerlink" title="1.1 减少 DOM 元素"></a>1.1 减少 DOM 元素</h3><p>DOM 元素越多、越复杂，则 DOM 操作（即重绘、重排）会越慢</p>
+<p>优化方式：</p>
+<ul>
+<li>可以使用伪元素、阴影、CSS 实现的内容尽量不要使用 DOM 实现</li>
+<li>按需加载，减少不必要的渲染</li>
+<li>结构合理，语义化标签</li>
+</ul>
+<h3 id="1-2-降低-CSS-选择器的复杂性"><a href="#1-2-降低-CSS-选择器的复杂性" class="headerlink" title="1.2 降低 CSS 选择器的复杂性"></a>1.2 降低 CSS 选择器的复杂性</h3><p>CSS 选择器的匹配规则是是<em>从右往左</em>的，即先找到符合条件的元素，然后再匹配父元素进行过滤（why? 符合条件的元素远少于不符合条件的元素，可以节约性能）</p>
+<p>所以有如下注意事项：</p>
+<ul>
+<li>不给ID分类和Class分类添加标签名；（会增加一次过滤）</li>
+<li>用子代选择器代替后代选择器；（避免无效的遍历）</li>
+<li>用Class分类代替子代选择器；（避免多次遍历）</li>
+<li>特殊类别可使用属性选择器；（避免多次遍历）</li>
+<li>正确使用可继承的属性；（可从父元素传到子元素）</li>
+<li>尽量避免通配符；（首先会遍历所有的元素，然后再过滤）</li>
+</ul>
+<h3 id="1-2-尽可能使用-flex-布局"><a href="#1-2-尽可能使用-flex-布局" class="headerlink" title="1.2 尽可能使用 flex 布局"></a>1.2 尽可能使用 flex 布局</h3><p>尽量使用 flex 代替浮动、表格等布局，后者会更耗性能且不易维护</p>
+<h3 id="1-3-使用字体图标代替图片"><a href="#1-3-使用字体图标代替图片" class="headerlink" title="1.3 使用字体图标代替图片"></a>1.3 使用字体图标代替图片</h3><p>字体图标就是将图标制作成一个字体，使用时就跟字体一样，可以设置属性，例如 font-size、color 等，而且字体图标是矢量图，不会失真，生成的文件也较小。</p>
+<h3 id="1-4-合理使用-will-change"><a href="#1-4-合理使用-will-change" class="headerlink" title="1.4 合理使用 will-change"></a>1.4 合理使用 will-change</h3><p>告知浏览器该元素会有哪些变化的方法，这样浏览器可以在元素属性真正发生变化之前提前做好对应的优化准备工作</p>
+<h3 id="1-5-使用-content-visibility"><a href="#1-5-使用-content-visibility" class="headerlink" title="1.5 使用 content-visibility"></a>1.5 使用 content-visibility</h3><p><code>content-visibility</code> 属性接受多个值，其中 <code>auto</code> 是可立即提高性能的属性。一个具有 <code>content-visibility: auto</code> 属性的元素可以获得布局、样式和绘制的限制（区域），如果元素不在屏幕上，这不会渲染其后代。浏览器在不考虑元素任何内容的情况下确定元素的大小，在此处则跳过大多数渲染。</p>
+<h3 id="1-6-使用-CSS3-GPU-加速"><a href="#1-6-使用-CSS3-GPU-加速" class="headerlink" title="1.6 使用 CSS3 GPU 加速"></a>1.6 使用 CSS3 GPU 加速</h3><blockquote>
+<p>在 GPU 渲染的过程中，一些元素会因为符合了某些规则，而被提升为独立的层（黄色边框部分），一旦独立出来，就不会影响其它 DOM 的布局，所以我们可以利用这些规则，将经常变换的 DOM 主动提升到独立的层，那么在浏览器的一帧运行中，就可以减少 Layout 和 Paint 的时间了</p>
+</blockquote>
+<p>CSS 中的以下几个属性能触发硬件加速：</p>
+<ul>
+<li>transform</li>
+<li>opacity</li>
+<li>filter</li>
+<li>will-change</li>
+</ul>
+<h3 id="1-7-避免过多的回流与重绘"><a href="#1-7-避免过多的回流与重绘" class="headerlink" title="1.7 避免过多的回流与重绘"></a>1.7 避免过多的回流与重绘</h3><ul>
+<li>重绘（reflow）：重新绘制（如改变某个元素的颜色、背景，并没有使布局改变）</li>
+<li>重排（repaint）：重新生成布局（如改变某个元素的位置，导致布局改变，同时触发 重排、重绘）</li>
+</ul>
+<p>相对于 <code>Object</code>、<code>Array</code> 操作，DOM 上的操作会慢上几个数量级，即使现代浏览器已经对 DOM 操作（重排、重绘）做了无数优化。所以大部分时候，Web 性能的瓶颈通常在渲染上。</p>
+<blockquote>
+<p>DOM 操作很慢，绝大部分时候是指 DOM 操作所产生的副作用慢（主要是导致了重排），在页面上的任何操作都是有代价的</p>
+</blockquote>
+<p>说明：</p>
+<ol>
+<li>样式表越简单，重排和重绘就越快；</li>
+<li>重排和重绘的 DOM 元素层级越高，成本就越高；</li>
+<li><code>&lt;table&gt;</code> 元素的重排和重绘成本高于 <code>&lt;div&gt;</code> 元素</li>
+</ol>
+<p>优化方式：</p>
+<ul>
+<li>批量读写：统一读取属性，然后统一修改 DOM ，减少渲染次数</li>
+<li>使用 DOM 片段 <code>document.createDocumentFragment()</code></li>
+<li>多次访问同一 DOM 应用局部变量缓存</li>
+<li>操作元素时先隐藏，修改完元素后再显示</li>
+<li>将元素的 <code>position</code> 属性为 <code>absolute</code> 或 <code>fixed</code> 的元素</li>
+<li>使用 <code>window.requestAnimationFrame()</code>、<code>window.requestIdleCallback()</code> 调节重新渲染</li>
+<li>使用虚拟 DOM 技术，如 <code>React</code>、<code>Vue</code></li>
+</ul>
+<h3 id="1-8-使用-preload、prefetch"><a href="#1-8-使用-preload、prefetch" class="headerlink" title="1.8 使用 preload、prefetch"></a>1.8 使用 preload、prefetch</h3><ul>
+<li><code>&lt;link rel=&quot;preload&quot;&gt;&lt;/link&gt;</code>用于本页面要用到的关键资源，包括关键js、字体、css文件。preload将会把资源得下载顺序权重提高，使得关键数据提前下载好，优化页面打开速度</li>
+<li><code>&lt;link rel=&quot;prefetch&quot;&gt;&lt;/link&gt;</code>用于加速未来页面里的资源，被标记为 prefetch 的资源，将会被浏览器在空闲时间加载，下载顺序权重比较低</li>
+</ul>
+<h3 id="1-9-使用-requestAnimationFrame-优化动画"><a href="#1-9-使用-requestAnimationFrame-优化动画" class="headerlink" title="1.9 使用 requestAnimationFrame 优化动画"></a>1.9 使用 requestAnimationFrame 优化动画</h3><p>使用 <code>setTimeout</code> 或 <code>setInterval</code> 来实现动画的话，回调函数将在帧中的某个时点运行，可能刚好在末尾，可能经常丢失帧，导致卡顿，requestAnimationFrame 会在浏览器下一次重绘前执行，能使动画看上去更加流畅（PS: 当然最好的方式是使用 CSS3 动画）</p>
+<h3 id="1-10-使用虚拟列表"><a href="#1-10-使用虚拟列表" class="headerlink" title="1.10 使用虚拟列表"></a>1.10 使用虚拟列表</h3><p>虚拟列表其实是按需显示的一种实现，即只对可见区域进行渲染，对非可见区域中的数据不渲染或部分渲染的技术，从而达到极高的渲染性能。详情请看文章末尾的相关链接。</p>
+<h3 id="1-11-防抖、节流"><a href="#1-11-防抖、节流" class="headerlink" title="1.11 防抖、节流"></a>1.11 防抖、节流</h3><p>用于 onresize、onkeydown 等频繁触发的事件中，可减少请求、DOM 操作等，改善用户体验</p>
+<ul>
+<li>防抖：在多次触发中(还没执行)，只执行最后一个触发。</li>
+<li>节流：在一段时间内，只能执行一次。</li>
+</ul>
+<h3 id="1-12-图片优化"><a href="#1-12-图片优化" class="headerlink" title="1.12 图片优化"></a>1.12 图片优化</h3><ul>
+<li>图片延迟加载：只加载可视区内的图片，根据 <code>getBoundingClientRect()</code> 来判断</li>
+<li>响应式图片：够根据屏幕大小自动加载合适的图片，可通过 <code>&lt;picture&gt;</code> 或 <code>@media</code> 来实现</li>
+<li>图片压缩：在可接受的范围内压缩图片，压缩后通常能减少 30% 左右的大小，且肉眼看上去无差异</li>
+<li>使用 webp 格式的图片：更优的图像数据压缩算法，相比于传统 JPEG、PNG 图片，Webp 可以让图片大小平均减少 70% 左右。</li>
+<li>合理使用图片、背景图：装饰性的图片应该使用 CSS 的 <code>background-image</code> 标签，而不是使用 <code>img</code> 标签<ul>
+<li><code>img</code> 标签 DOM 解析完后去加载图片，图片加载失败时会显示一个撕裂的小图标标记，<strong>兼顾 SEO 和标签语义化时应该使用 <img /></strong></li>
+<li><code>background-image</code> 内引用的图片会在该规则生效时，才会去下载该图片（有点类似于按需加载），图片加载失败时不会显示异常</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-13-使用骨架屏"><a href="#1-13-使用骨架屏" class="headerlink" title="1.13 使用骨架屏"></a>1.13 使用骨架屏</h3><p>提前占好位置，当资源加载完成即可填充，减少页面的回流与重绘，同时还能给用户最直接的反馈，主要用于提升用户体验。</p>
+<h3 id="1-14-预渲染、服务端渲染（SSR）"><a href="#1-14-预渲染、服务端渲染（SSR）" class="headerlink" title="1.14 预渲染、服务端渲染（SSR）"></a>1.14 预渲染、服务端渲染（SSR）</h3><ul>
+<li>有利于 SEO</li>
+<li>有利于首屏渲染，提升用户体验</li>
+</ul>
+<p>说明：请权衡利弊后，再酌情使用！！</p>
+<h2 id="二、webpack-相关"><a href="#二、webpack-相关" class="headerlink" title="二、webpack 相关"></a>二、webpack 相关</h2><h3 id="2-1-Tree-Sharking"><a href="#2-1-Tree-Sharking" class="headerlink" title="2.1 Tree Sharking"></a>2.1 Tree Sharking</h3><p>用于消除无用的 js 代码，ES6模块依赖关系是确定的，和运行时的状态无关，可以进行可靠的静态分析，这就是 Tree Sharking 的基础</p>
+<h3 id="2-2-代码拆分"><a href="#2-2-代码拆分" class="headerlink" title="2.2 代码拆分"></a>2.2 代码拆分</h3><p>使用 webpack 提供的 <code>optimization.splitChunks</code> 属性，主要作用是提取公共代码，防止代码被重复打包，拆分过大的js文件，合并零散的js文件等。</p>
+<h3 id="2-3-使用外部扩展-externals"><a href="#2-3-使用外部扩展-externals" class="headerlink" title="2.3 使用外部扩展 externals"></a>2.3 使用外部扩展 externals</h3><p>防止将某些 <code>import</code> 的包打包到 bundle 中，而是在运行时再去从外部获取这些扩展依赖。通过这种方式引入的依赖库，不需要 webpack 处理，编译进文件中，在我们需要，使用它的时候可以通过CMD、AMD、或者 window 全局方式访问</p>
+<p>例如，可以通过 CDN 去引入 React <code>&lt;script crossorigin src=&quot;https://unpkg.com/react@17/umd/react.production.min.js&quot;&gt;&lt;/script&gt;</code></p>
+<h3 id="2-4-动态-import"><a href="#2-4-动态-import" class="headerlink" title="2.4 动态 import()"></a>2.4 动态 import()</h3><p>webpack 提供了动态加载的 <code>import()</code> 方法，可以实现按需加载我们的代码，并且使用了 promise 式的回调，获取加载的包。在代码中所有被 import() 的模块，都将打成一个单独的包，用于实现页面或组件的按需加载。</p>
+<h3 id="2-5-动态-polyfill"><a href="#2-5-动态-polyfill" class="headerlink" title="2.5 动态 polyfill"></a>2.5 动态 polyfill</h3><blockquote>
+<p>为了浏览器的兼容性，我们常常引入各种 polyfill，但是在构建时静态地引入 polyfill 存在一些问题，比如对于机型和浏览器版本比较新的用户来说，他们完全不需要 polyfill，引入 polyfill 对于这部分用户来说是多余的，从而造成体积变大和性能损失</p>
+</blockquote>
+<p>动态 polyfill 指的是根据不同的浏览器，动态载入需要的 polyfill。 Polyfill.io 通过尝试使用 polyfill 重新创建缺少的功能，可以更轻松地支持不同的浏览器，并且可以大幅度的减少构建体积。</p>
+<p>原理：根据你的浏览器 UA 头，判断你是否支持某些特性，从而返回给你一个合适的 polyfill。对于最新的 Chrome 浏览器来说，不需要任何 polyfill，所以返回的内容为空。如在 html 文件中引入 <code>&lt;script crossorigin=&quot;anonymous&quot; src=&quot;https://polyfill.io/v3/polyfill.js&quot;&gt;&lt;/script&gt;</code></p>
+<h2 id="三、HTTP-层面"><a href="#三、HTTP-层面" class="headerlink" title="三、HTTP 层面"></a>三、HTTP 层面</h2><h3 id="3-1-减少-HTTP-请求数"><a href="#3-1-减少-HTTP-请求数" class="headerlink" title="3.1 减少 HTTP 请求数"></a>3.1 减少 HTTP 请求数</h3><p>一个完整的 HTTP 请求需要经历 DNS 查找，TCP 握手，浏览器发出 HTTP 请求，服务器接收请求，服务器处理请求并发回响应，浏览器接收响应等过程，而如果文件较小，则真正下载数据的时间占比就越小，将多个小文件合并为一个大文件，从而减少 HTTP 请求次数，能提高此比例 </p>
+<ul>
+<li>每个请求都是有成本的，DNS寻址、与服务器建立连接、发送数据、等待服务器响应、接收数据复杂的过程。（使用缓存功能）</li>
+<li>每个请求都需要携带数据，每个请求都需要占用带宽（合并请求，如多个图片合并成一张大图）。</li>
+<li>浏览器进行并发请求的请求数是有上限的，因此请求数多了以后，浏览器需要分批进行请求，因此会增加用户的等待时间。（懒加载，只在必要的时机加载）</li>
+</ul>
+<h3 id="3-2-启用-gzip-压缩"><a href="#3-2-启用-gzip-压缩" class="headerlink" title="3.2 启用 gzip 压缩"></a>3.2 启用 gzip 压缩</h3><p>许多网络服务器可以通过调用第三方模块或使用内置程序将文件压缩为 gzip 格式，然后再发送该压缩文件以供下载。这样可以在下载呈现网站所需的资源时节省一些时间。</p>
+<blockquote>
+<p>Gzip通常将响应大小减少约 70％</p>
+</blockquote>
+<h3 id="3-3-改善服务器响应时间"><a href="#3-3-改善服务器响应时间" class="headerlink" title="3.3 改善服务器响应时间"></a>3.3 改善服务器响应时间</h3><p>将服务器响应时间控制在 200ms 以内。有很多潜在因素都可能会延缓服务器响应，例如应用逻辑缓慢、数据库查询缓慢、路由缓慢、框架、库、资源CPU不足或内存不足等。</p>
+<h3 id="3-4-使用-CDN-加速"><a href="#3-4-使用-CDN-加速" class="headerlink" title="3.4 使用 CDN 加速"></a>3.4 使用 CDN 加速</h3><p>可降低网络的拥塞状况、提高请求的响应速度，也能够减少源站的负载压力</p>
+<h3 id="3-5-合理的-HTTP-缓存策略"><a href="#3-5-合理的-HTTP-缓存策略" class="headerlink" title="3.5 合理的 HTTP 缓存策略"></a>3.5 合理的 HTTP 缓存策略</h3><p>尽可能利用缓存，对于文件名中有 hash 值时，设置强缓存，如设置 <code>cache-control: max-age=2592000</code> (1个月，或者半年、一年等)</p>
+<h3 id="3-6-域名分片、域名收敛"><a href="#3-6-域名分片、域名收敛" class="headerlink" title="3.6 域名分片、域名收敛"></a>3.6 域名分片、域名收敛</h3><p>域名分片：把页面资源拆分成多个域名进行访问，从而提高页面加载速度。原因在于 Web 浏览器会限制每个域名的并发数量，如 6 个（浏览器有并发限制，是为了防止 DDOS攻击），当并行下载文件超过最大并发数就需要排队等待，如果有多个域名，则每个域名都可以发起 6 个 HTTP 请求，提高并发量。另外，不同的域名也可以防止 cookie 污染。（PS: 主要运用于 PC 端）</p>
+<p>域名收敛：将静态资源放在一个域名下不进行发散，主要是为了适应移动端的发展需求，通常 DNS 是一个开销较大的操作，而移动端由于网络带宽和实时性、资源等的限制，这些开销对移动端的用户体验是致命的，因此需要进行域名收敛。（PS: 主要运用于移动端）</p>
+<h3 id="3-7-使用-HTTP2"><a href="#3-7-使用-HTTP2" class="headerlink" title="3.7 使用 HTTP2"></a>3.7 使用 HTTP2</h3><ul>
+<li>二进制分帧</li>
+<li>多路复用</li>
+<li>首部压缩</li>
+<li>流量控制</li>
+<li>…</li>
+</ul>
+<p>详细介绍可看下面的<strong>相关链接</strong>部分</p>
+<h2 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility">content-visibility</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestAnimationFrame">window.requestAnimationFrame</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903982742110216">高性能渲染十万条数据(虚拟列表)</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903873518239752">CDN原理简析</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26559480">一文读懂 HTTP/2 特性</a></li>
+</ul>
+
+          
+        
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://xuxb.github.io/2021/05/24/HTML/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" title="前端性能优化" target="_blank" rel="external">https://xuxb.github.io/2021/05/24/HTML/%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xuxb" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xuxb" target="_blank"><span class="text-dark">一枚小笨蛋</span><small class="ml-1x">web 前端开发工程师</small></a></h3>
+        <div>个人简介...</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/05/24/%E7%AE%97%E6%B3%95%E9%A2%98/%E4%B8%8A%E5%8F%B0%E9%98%B6%E9%97%AE%E9%A2%98/" title="上台阶问题"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/05/24/%E7%AE%97%E6%B3%95%E9%A2%98/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%20-%20%E7%A1%AC%E5%B8%81%E6%89%BE%E9%9B%B6%E9%97%AE%E9%A2%98/" title="技巧篇 - 动态规划 - 硬币找零问题"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
