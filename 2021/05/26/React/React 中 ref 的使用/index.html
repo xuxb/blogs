@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>React 中 ref 的使用 | Hexo</title>
+  <meta name="description" content="React 中 ref 的使用ref 与 Refs 是两个不同的概念  ref 是一个特殊的属性，可作用于 DOM 元素或 React 元素上，用于接收 HTML 元素或组件实例，作为其 current 属性 Refs 是 React 提供的可用特定 API 创建的一个对象，可以用 React.creatRef() 、React.useRef() 创建，生成的对象类似于 &amp;#123; curren">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React 中 ref 的使用">
+<meta property="og:url" content="https://xuxb.github.io/2021/05/26/React/React%20%E4%B8%AD%20ref%20%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="React 中 ref 的使用ref 与 Refs 是两个不同的概念  ref 是一个特殊的属性，可作用于 DOM 元素或 React 元素上，用于接收 HTML 元素或组件实例，作为其 current 属性 Refs 是 React 提供的可用特定 API 创建的一个对象，可以用 React.creatRef() 、React.useRef() 创建，生成的对象类似于 &amp;#123; curren">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-26T08:32:38.000Z">
+<meta property="article:modified_time" content="2021-06-07T11:47:36.201Z">
+<meta property="article:author" content="一枚小笨蛋">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://xuxb.github.io/2021/05/26/React/React%20%E4%B8%AD%20ref%20%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/xuxb" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">一枚小笨蛋</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">web 前端开发工程师</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> 广东深圳</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/">CSS</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CSS/Sass/">Sass</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/D3-js/">D3.js</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTML/">HTML</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTTP/">HTTP</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript/">JavaScript</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JavaScript-%E7%BC%96%E7%A8%8B%E9%A2%98/">JavaScript 编程题</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SVG/">SVG</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web-%E5%AE%89%E5%85%A8/">Web 安全</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%9D%82%E9%A1%B9/">杂项</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95%E8%8C%83%E5%BC%8F/">算法范式</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95%E9%A2%98/">算法题</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/">面试题</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/D3-js/" rel="tag">D3.js</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/" rel="tag">HTTP</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JSONP/" rel="tag">JSONP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" rel="tag">JavaScript 原理</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" rel="tag">JavaScript 基础</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Performance/" rel="tag">Performance</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SVG/" rel="tag">SVG</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sass/" rel="tag">Sass</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cookie/" rel="tag">cookie</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/" rel="tag">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/" rel="tag">server</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-%E5%AE%89%E5%85%A8/" rel="tag">web 安全</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" rel="tag">同源策略</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD/" rel="tag">性能</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%80%E5%B7%A7%E7%AF%87/" rel="tag">技巧篇</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E8%8C%83%E5%BC%8F/" rel="tag">算法范式</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" rel="tag">算法题</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B%E9%A2%98/" rel="tag">编程题</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/CSS/" style="font-size: 13.22px;">CSS</a> <a href="/tags/D3-js/" style="font-size: 13.89px;">D3.js</a> <a href="/tags/HTML/" style="font-size: 13.11px;">HTML</a> <a href="/tags/HTTP/" style="font-size: 13.67px;">HTTP</a> <a href="/tags/JSONP/" style="font-size: 13px;">JSONP</a> <a href="/tags/JavaScript-%E5%8E%9F%E7%90%86/" style="font-size: 13.56px;">JavaScript 原理</a> <a href="/tags/JavaScript-%E5%9F%BA%E7%A1%80/" style="font-size: 13.33px;">JavaScript 基础</a> <a href="/tags/Performance/" style="font-size: 13px;">Performance</a> <a href="/tags/React/" style="font-size: 13.56px;">React</a> <a href="/tags/SVG/" style="font-size: 13.11px;">SVG</a> <a href="/tags/Sass/" style="font-size: 13.11px;">Sass</a> <a href="/tags/cookie/" style="font-size: 13px;">cookie</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/server/" style="font-size: 13.11px;">server</a> <a href="/tags/web-%E5%AE%89%E5%85%A8/" style="font-size: 13.56px;">web 安全</a> <a href="/tags/%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5/" style="font-size: 13px;">同源策略</a> <a href="/tags/%E6%80%A7%E8%83%BD/" style="font-size: 13px;">性能</a> <a href="/tags/%E6%8A%80%E5%B7%A7%E7%AF%87/" style="font-size: 13.89px;">技巧篇</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 13.22px;">数据结构</a> <a href="/tags/%E7%AE%97%E6%B3%95%E8%8C%83%E5%BC%8F/" style="font-size: 13.44px;">算法范式</a> <a href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" style="font-size: 14px;">算法题</a> <a href="/tags/%E7%BC%96%E7%A8%8B%E9%A2%98/" style="font-size: 13.78px;">编程题</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 13.11px;">面试题</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-React/React 中 ref 的使用" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      React 中 ref 的使用
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/05/26/React/React%20%E4%B8%AD%20ref%20%E7%9A%84%E4%BD%BF%E7%94%A8/" class="article-date">
+	  <time datetime="2021-05-26T08:32:38.000Z" itemprop="datePublished">2021-05-26</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/React/" rel="tag">React</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/05/26/React/React%20%E4%B8%AD%20ref%20%E7%9A%84%E4%BD%BF%E7%94%A8/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        
+          
+            <h1 id="React-中-ref-的使用"><a href="#React-中-ref-的使用" class="headerlink" title="React 中 ref 的使用"></a>React 中 ref 的使用</h1><p><strong><code>ref</code> 与 <code>Refs</code> 是两个不同的概念</strong></p>
+<ul>
+<li><code>ref</code> 是一个特殊的属性，可作用于 <code>DOM 元素</code>或 <code>React 元素</code>上，用于接收 HTML 元素或组件实例，作为其 current 属性</li>
+<li><code>Refs</code> 是 React 提供的可用特定 API 创建的一个对象，可以用 <code>React.creatRef()</code> 、<code>React.useRef()</code> 创建，生成的对象类似于 <code>&#123; current: null &#125;</code>，用于赋值给 <code>DOM 元素</code> 或 <code>React 元素</code> 上</li>
+</ul>
+<p><strong>适合使用 refs 的几种情况</strong></p>
+<ul>
+<li>管理焦点，文本选择或媒体播放</li>
+<li>触发强制动画</li>
+<li>集成第三方 DOM 库</li>
+</ul>
+<blockquote>
+<p>React 为提供了直接访问 <em>DOM元素</em> 和 <em>React 元素</em>的方式，就是通过 Refs。使用的方式很简单，就是为想要访问的元素上添加 <code>ref</code> 属性，将 <code>Refs</code> 对象附加到 <code>ref</code> 属性上，那么此时 <code>Refs</code> 对象的 <code>current</code> 属性就不再是空，而是对应的 <em>DOM元素</em> 或 <em>React 元素实例</em></p>
+</blockquote>
+<p><strong>React.createRef()</strong><br>使用 <code>React.createRef()</code> 的方式可以创建一个 <em>Ref 对象</em>，可通过附加到 ref 属性上访问一个 <em>原生DOM元素</em> 或者 <em>class 组件</em>。这种方式可以在<em>函数组件</em>和<em>class 组件</em>中使用。</p>
+<p><strong>React.useRef(initialValue)</strong><br><code>React.useRef()</code> 返回一个可变的 <em>Ref 对象</em>，其 <code>.current</code> 属性被初始化为传入的参数 <code>initialValue</code>。返回的 <code>Refs</code> 对象在组件的整个生命周期内保持不变。这种方式只能在<strong>函数组件</strong>中使用。</p>
+<blockquote>
+<p>ref 属性只能被添加到原生 DOM元素 或者 React的 class 组件上。不能在直接函数组件 上使用 ref 属性，因为函数组件没有实例。若想在函数组件上使用 ref 属性，可以通过 React.forwardRef 将 Ref 转发到函数组件内部</p>
+</blockquote>
+<p>当 ref 属性接收 Ref 对象时，会将其对应的 DOM元素 或者 class组件实例 直接赋值给 Ref 对象中的 current 属性上。而当 ref 属性接收一个回调函数时，会将其对应的 DOM元素 或 class组件实例作为回调函数的参数调用回调函数。</p>
+<h3 id="1-React-createRef"><a href="#1-React-createRef" class="headerlink" title="1. React.createRef()"></a>1. React.createRef()</h3><p><code>React.createRef</code> 主要用在 class 组件中，用于创建 Refs 对象，用来保存和引用一些值，并且修改这个属性不会触发组件更新。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyComponent</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">props</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>(props);</span><br><span class="line">    <span class="built_in">this</span>.myRef = React.createRef();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">componentDidMount</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.myRef.current.focus();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">input</span> <span class="attr">ref</span>=<span class="string">&#123;this.myRef&#125;</span> /&gt;</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-React-useRef"><a href="#2-React-useRef" class="headerlink" title="2. React.useRef()"></a>2. React.useRef()</h3><p><code>React.useRef()</code> 作为 react hooks 的一种，主要用在函数组件中。</p>
+<p><code>React.useRef()</code> 返回一个可变的 <em>Ref 对象</em>，其 <code>.current</code> 属性被初始化为传入的参数（initialValue）。返回的 ref 对象在组件的<strong>整个生命周期内保持不变</strong>，所以可用于保存 <strong>React 组件</strong>、<strong>DOM 元素</strong>或<strong>普通 js 对象</strong>的值</p>
+<p>默认情况下，不能在函数组件上使用 ref 属性，因为函数组件没有示例，所以以下代码不能正常运行</p>
+<blockquote>
+<p>函数组件中 state 变化时，会重新创建、初始化所有的变量和表达式，故不能使用 <code>React.createRef()</code></p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不能正常运行</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyFunctionComponent</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">input</span> /&gt;</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Parent</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">props</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>(props);</span><br><span class="line">    <span class="built_in">this</span>.textInput = React.createRef();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;MyFunctionComponent ref=&#123;<span class="built_in">this</span>.textInput&#125; /&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果要在函数组件中使用 ref，可以使用 React.forwardRef（可与 useImperativeHandle 结合使用）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可以正常运行</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyFunctionComponent</span>(<span class="params">props, ref</span>) </span>&#123;</span><br><span class="line">  React.useImperativeHandle(ref, <span class="function">() =&gt;</span> (&#123;</span><br><span class="line">    onCheck,</span><br><span class="line">  &#125;));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> onCheck = <span class="function">() =&gt;</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">input</span> /&gt;</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> NewMyFunctionComponent = React.forwardRef(MyFunctionComponent)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Parent</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">props</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>(props);</span><br><span class="line">    <span class="built_in">this</span>.textInput = React.createRef();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;MyFunctionComponent ref=&#123;<span class="built_in">this</span>.textInput&#125; /&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总之，在函数组件内部使用 ref 属性，只能指向一个 DOM 元素或 class 组件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">CustomTextInput</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 这里必须声明 textInput，这样 ref 才可以引用它</span></span><br><span class="line">  <span class="keyword">const</span> textInput = useRef(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">handleClick</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    textInput.current.focus();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;input</span><br><span class="line">        type=<span class="string">&quot;text&quot;</span></span><br><span class="line">        ref=&#123;textInput&#125; /&gt;</span><br><span class="line">      &lt;input</span><br><span class="line">        type=<span class="string">&quot;button&quot;</span></span><br><span class="line">        value=<span class="string">&quot;Focus the text input&quot;</span></span><br><span class="line">        onClick=&#123;handleClick&#125;</span><br><span class="line">      /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-React-forwardRef"><a href="#3-React-forwardRef" class="headerlink" title="3. React.forwardRef()"></a>3. React.forwardRef()</h3><p><code>React.forwardRef</code> 主要用于穿过父元素直接获取子元素的 ref。HOC（higher-order component）在 ref 使用上会存在问题，HOC 的 ref 是无法通过 props 进行传递的，因此无法直接获取被包裹组件（WrappedComponent），所以需要进行中转。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">HOCProps</span>(<span class="params">WrappedComponent</span>) </span>&#123;</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">HOCComponent</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">props</span>)</span> &#123;</span><br><span class="line">      <span class="built_in">super</span>(props);</span><br><span class="line">      <span class="built_in">this</span>.setWrappedInstance = <span class="built_in">this</span>.setWrappedInstance.bind(<span class="built_in">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="title">getWrappedInstance</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">this</span>.wrappedInstance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 实现 ref 的访问</span></span><br><span class="line">    <span class="function"><span class="title">setWrappedInstance</span>(<span class="params">ref</span>)</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.wrappedInstance = ref;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">WrappedComponent</span> <span class="attr">ref</span>=<span class="string">&#123;this.setWrappedInstance&#125;</span> &#123;<span class="attr">...this.props</span>&#125; /&gt;</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> HOCComponent;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = HOCProps(Wrap);</span><br><span class="line"></span><br><span class="line">&lt;App ref=&#123;<span class="function">(<span class="params">dom</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(dom); <span class="comment">// 只能获取到 HOCComponent</span></span><br><span class="line">  <span class="built_in">console</span>.log(dom.getWrappedInstance()); <span class="comment">// 通过中转后可以获取到 WrappedComponent</span></span><br><span class="line">&#125;&#125; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>利用 forwardRef 能直接穿透 HOCComponent 获取到 WrappedComponent</p>
+<blockquote>
+<p>React.forwardRef 的原理其实非常简单，forwardRef 会生成 react 内部一种较为特殊的 Component。当进行创建更新操作时，会将 forwardRef 组件上的 props 与 ref 直接传递给提前注入的 render 函数，来生成 children。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">HOCProps</span>(<span class="params">WrappedComponent</span>) </span>&#123;</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">HOCComponent</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123; forwardedRef, ...rest &#125; = <span class="built_in">this</span>.props;</span><br><span class="line">      <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">WrappedComponent</span> <span class="attr">ref</span>=<span class="string">&#123;forwardedRef&#125;</span> &#123;<span class="attr">...rest</span>&#125; /&gt;</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> React.forwardRef(<span class="function">(<span class="params">props, ref</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">HOCComponent</span> <span class="attr">forwardedRef</span>=<span class="string">&#123;ref&#125;</span> &#123;<span class="attr">...props</span>&#125;  /&gt;</span></span>;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = HOCProps(Wrap);</span><br><span class="line"></span><br><span class="line">&lt;App ref=&#123;<span class="function">(<span class="params">dom</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 可以直接获取 WrappedComponent</span></span><br><span class="line">  <span class="built_in">console</span>.log(dom);</span><br><span class="line">&#125;&#125; /&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-React-useImperativeHandle"><a href="#4-React-useImperativeHandle" class="headerlink" title="4. React.useImperativeHandle()"></a>4. React.useImperativeHandle()</h3><p><code>useImperativeHandle(ref, createHandle, [deps])</code></p>
+<p><code>useImperativeHandle</code> 可以让你在使用 <code>ref</code> 时自定义暴露给父组件的实例值。<code>useImperativeHandle</code> 应当与 <code>forwardRef</code> 一起使用.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FancyInput</span>(<span class="params">props, ref</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> inputRef = useRef();</span><br><span class="line"></span><br><span class="line">  useImperativeHandle(ref, <span class="function">() =&gt;</span> (&#123;</span><br><span class="line">    focus: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      inputRef.current.focus();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">input</span> <span class="attr">ref</span>=<span class="string">&#123;inputRef&#125;</span> /&gt;</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">FancyInput = forwardRef(FancyInput);</span><br></pre></td></tr></table></figure>
+
+<p>在本例中，渲染 <code>&lt;FancyInput ref=&#123;inputRef&#125; /&gt;</code> 的父组件可以调用 <code>inputRef.current.focus()</code>。</p>
+<h3 id="5-callback-ref"><a href="#5-callback-ref" class="headerlink" title="5. callback ref"></a>5. callback ref</h3><p>当 ref 属性接收一个回调函数时，会将其对应的 DOM元素 或 class 组件实例作为回调函数的参数调用回调函数。因此我们可以通过回调 Refs 的方式不依靠 Ref 对象，更灵活地控制要访问的元素或实例</p>
+<blockquote>
+<p>callback ref 采用了组件 render 过程中在闭包函数中分配 ref 的模式，通常会使用内联函数的形式，那么每次渲染都会重新创建，由于 react 会清理旧的 ref 然后设置新的，因此更新期间会调用两次，第一次为 null，如果在 callback 中带有业务逻辑的话，可能会出错，当然可以通过将 callback 定义成类成员函数并进行绑定的方式避免。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyComponent</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">componentDidMount</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.myRef.focus();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">input</span> <span class="attr">ref</span>=<span class="string">&#123;(ele)</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="xml">      this.myRef = ele;</span></span><br><span class="line"><span class="xml">    &#125;&#125; /&gt;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-string-ref-不再建议使用"><a href="#6-string-ref-不再建议使用" class="headerlink" title="6. string ref (不再建议使用)"></a>6. string ref (不再建议使用)</h3><p>React 官方文档直接提出 <code>string ref</code> 将会在未来版本被移出，建议用户使用 <code>callback ref</code> 来代替</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// string ref</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyComponent</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">componentDidMount</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.refs.myRef.focus();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">input</span> <span class="attr">ref</span>=<span class="string">&quot;myRef&quot;</span> /&gt;</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>string ref</code> 存在以下问题：</p>
+<ol>
+<li>存在性能问题：当 ref 定义为 string 时，需要 React 追踪当前正在渲染的组件，在 reconciliation 阶段，React Element 创建和更新的过程中，ref 会被封装为一个闭包函数，等待 commit 阶段被执行，这会对 React 的性能产生一些影响。</li>
+<li>使用 string ref 会造成 ref 挂载位置产生歧义</li>
+<li>string ref 无法被组合，例如一个第三方库的父组件已经给子组件传递了 ref，那么我们就无法再在子组件上添加 ref 了，而 callback ref 可完美解决此问题</li>
+<li>在根组件上使用无法生效</li>
+<li>对于静态类型较不友好，当使用 string ref 时，必须显式声明 refs 的类型，无法完成自动推导。</li>
+<li>编译器无法将 string ref 与其 refs 上对应的属性进行混淆，而使用 callback ref，可被混淆。</li>
+</ol>
+<h3 id="7-总结"><a href="#7-总结" class="headerlink" title="7. 总结"></a>7. 总结</h3><p>在 class 内部通过 <code>React.createRef()</code> 创建 Refs 对象，在函数组件内部通过 <code>React.useRef()</code> 创建 Refs 对象，如果被引用的组件为函数组件，则需要通过 <code>React.forwardRef()</code> 和 <code>React.useImperativeHandler()</code> 来作处理。</p>
+<ul>
+<li>父组件为 class 组件，子组件为 class 组件 —- 父组件中直接使用 <code>React.createRef()</code> 引用子组件实例</li>
+<li>父组件为 class 组件，子组件为 函数组件 —- 父组件中 <code>React.createRef()</code>，子组件使用 <code>React.forwardRef()</code> 和 <code>React.useImperativeHandler()</code></li>
+<li>父组件为 函数组件，子组件为 class 组件 —- 父组件中直接使用 <code>React.useRef()</code> 引用子组件实例</li>
+<li>父组件为 函数组件，子组件为 函数组件 —- 父组件中 <code>React.useRef()</code>，子组件使用 <code>React.forwardRef()</code> 和 <code>React.useImperativeHandler()</code></li>
+</ul>
+
+          
+        
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://xuxb.github.io/2021/05/26/React/React%20%E4%B8%AD%20ref%20%E7%9A%84%E4%BD%BF%E7%94%A8/" title="React 中 ref 的使用" target="_blank" rel="external">https://xuxb.github.io/2021/05/26/React/React%20%E4%B8%AD%20ref%20%E7%9A%84%E4%BD%BF%E7%94%A8/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/xuxb" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/xuxb" target="_blank"><span class="text-dark">一枚小笨蛋</span><small class="ml-1x">web 前端开发工程师</small></a></h3>
+        <div>个人简介...</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/05/26/React/React%20%E5%92%8C%20Vue%20%E7%9A%84%E5%8C%BA%E5%88%AB/" title="React 和 Vue 的区别"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/05/26/React/React%20%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" title="React 生命周期"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/xuxb" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/xuxb" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/xuxb" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/xuxb" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
